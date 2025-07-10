@@ -1,60 +1,44 @@
 "use client"
 
-import { useState, useEffect } from "react" // Import useEffect
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { ChevronLeft, CreditCard, Landmark, QrCode } from "lucide-react"
+import { ChevronLeft } from "lucide-react" // Removed CreditCard, Landmark, QrCode as they are no longer needed
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Separator } from "@/components/ui/separator"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+// Removed Tabs, TabsContent, TabsList, TabsTrigger as payment method section is removed
 import { useToast } from "@/components/ui/use-toast"
 import { useCart } from "@/components/cart/use-cart"
 import { formatCurrency } from "@/lib/utils"
 import { AddressForm } from "@/components/checkout/address-form"
-import { CreditCardForm } from "@/components/checkout/credit-card-form"
-import { PixPayment } from "@/components/checkout/pix-payment"
-import { BoletoPayment } from "@/components/checkout/boleto-payment"
-import { useAuth } from "@/components/auth/use-auth" // Import useAuth
+// Removed CreditCardForm, PixPayment, BoletoPayment as payment method section is removed
 
 export default function CheckoutPage() {
   const router = useRouter()
   const { toast } = useToast()
   const { items, cartTotal, clearCart } = useCart()
-  const { isAuthenticated, isLoading } = useAuth() // Get auth status
   const [isProcessing, setIsProcessing] = useState(false)
-  const [paymentMethod, setPaymentMethod] = useState("credit-card")
+  // Removed paymentMethod state as it's no longer needed
   const [shippingMethod, setShippingMethod] = useState("standard")
 
   const shippingCost = shippingMethod === "express" ? 25.9 : 15.9
   const totalWithShipping = cartTotal + shippingCost
 
-  // Redirect if not authenticated or cart is empty
+  // Redirect if cart is empty
   useEffect(() => {
-    if (!isLoading) {
-      // Ensure auth status is loaded
-      if (!isAuthenticated) {
-        toast({
-          title: "Acesso Restrito",
-          description: "Você precisa estar logado para finalizar a compra.",
-          variant: "destructive",
-        })
-        router.push("/cadastro")
-      } else if (items.length === 0) {
-        router.push("/carrinho")
-      }
+    if (items.length === 0) {
+      router.push("/carrinho")
     }
-  }, [isAuthenticated, isLoading, items.length, router, toast])
+  }, [items.length, router])
 
   const handleSubmitOrder = async () => {
     setIsProcessing(true)
 
-    // Simulate API call to process order (e.g., a fetch request)
-    // For now, we'll just simulate the delay directly without setTimeout
     await new Promise((resolve) => setTimeout(resolve, 500)) // Simulate a brief processing time
 
     setIsProcessing(false)
@@ -65,10 +49,8 @@ export default function CheckoutPage() {
       description: "Você será redirecionado para o pagamento.",
     })
 
-    // Calculate the final amount based on payment method
-    const finalAmount = paymentMethod === "pix" ? totalWithShipping * 0.95 : totalWithShipping
-    // Mercado Pago expects amount in cents for some integrations, but for a direct link,
-    // it usually expects the decimal value. Let's keep it as is, but ensure it's a string.
+    // The payment method is now implicitly Mercado Pago, no need for conditional logic
+    const finalAmount = totalWithShipping
     const formattedAmount = finalAmount.toFixed(2) // Keep two decimal places for currency
 
     // Redirect to Mercado Pago link with the final amount
@@ -76,8 +58,8 @@ export default function CheckoutPage() {
     router.push(mercadoPagoLink)
   }
 
-  // Render null or loading state while checking auth/cart
-  if (isLoading || !isAuthenticated || items.length === 0) {
+  // Render null or loading state while checking cart
+  if (items.length === 0) {
     return null
   }
 
@@ -148,35 +130,7 @@ export default function CheckoutPage() {
             </RadioGroup>
           </div>
 
-          {/* Payment Method */}
-          <div className="bg-white rounded-lg border shadow-sm p-6">
-            <h2 className="text-lg font-bold mb-4">Método de Pagamento</h2>
-            <Tabs value={paymentMethod} onValueChange={setPaymentMethod}>
-              <TabsList className="grid grid-cols-1 sm:grid-cols-3 mb-6">
-                <TabsTrigger value="credit-card" className="flex items-center">
-                  <CreditCard className="mr-2 h-4 w-4" />
-                  Cartão
-                </TabsTrigger>
-                <TabsTrigger value="pix" className="flex items-center">
-                  <QrCode className="mr-2 h-4 w-4" />
-                  Pix
-                </TabsTrigger>
-                <TabsTrigger value="boleto" className="flex items-center">
-                  <Landmark className="mr-2 h-4 w-4" />
-                  Boleto
-                </TabsTrigger>
-              </TabsList>
-              <TabsContent value="credit-card">
-                <CreditCardForm amount={totalWithShipping} />
-              </TabsContent>
-              <TabsContent value="pix">
-                <PixPayment amount={totalWithShipping} />
-              </TabsContent>
-              <TabsContent value="boleto">
-                <BoletoPayment amount={totalWithShipping} />
-              </TabsContent>
-            </Tabs>
-          </div>
+          {/* Removed Payment Method section entirely */}
         </div>
 
         <div className="lg:col-span-1">
@@ -210,21 +164,14 @@ export default function CheckoutPage() {
                 <span className="text-muted-foreground">Frete</span>
                 <span>{formatCurrency(shippingCost)}</span>
               </div>
-              {paymentMethod === "pix" && (
-                <div className="flex justify-between text-green-600">
-                  <span>Desconto Pix (5%)</span>
-                  <span>-{formatCurrency(totalWithShipping * 0.05)}</span>
-                </div>
-              )}
+              {/* Removed Pix discount display as payment method section is removed */}
             </div>
 
             <Separator />
 
             <div className="flex justify-between font-bold text-lg">
               <span>Total</span>
-              <span>
-                {paymentMethod === "pix" ? formatCurrency(totalWithShipping * 0.95) : formatCurrency(totalWithShipping)}
-              </span>
+              <span>{formatCurrency(totalWithShipping)}</span>
             </div>
 
             <Button onClick={handleSubmitOrder} className="w-full" size="lg" disabled={isProcessing}>

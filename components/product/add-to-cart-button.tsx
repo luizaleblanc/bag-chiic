@@ -6,6 +6,7 @@ import { ShoppingCart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/components/ui/use-toast"
 import { useCart } from "@/components/cart/use-cart"
+import { cn } from "@/lib/utils"
 
 interface Product {
   id: string
@@ -50,7 +51,7 @@ export function AddToCartButton({ product, quantity = 1, className }: AddToCartB
   }
 
   return (
-    <Button onClick={handleAddToCart} disabled={isAdding} className={className} size="lg">
+    <Button onClick={handleAddToCart} disabled={isAdding} className={cn(className, "px-10")} size="lg">
       {isAdding ? (
         "Adicionando..."
       ) : (

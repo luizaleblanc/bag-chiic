@@ -18,42 +18,26 @@ export default function Footer() {
               Sua loja de bolsas feitas a mão.
             </p>
             <div className="flex space-x-3">
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <Facebook className="h-4 w-4" />
-                <span className="sr-only">Facebook</span>
+              <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
+                <Link href="https://www.facebook.com/bagchiic.atelier/" target="_blank" rel="noopener noreferrer">
+                  <Facebook className="h-4 w-4" />
+                  <span className="sr-only">Facebook</span>
+                </Link>
               </Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <Instagram className="h-4 w-4" />
-                <span className="sr-only">Instagram</span>
+              <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
+                <Link
+                  href="https://www.instagram.com/bagchiicatelier?igsh=eXJhaWRmdG8xcXFo"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Instagram className="h-4 w-4" />
+                  <span className="sr-only">Instagram</span>
+                </Link>
               </Button>
             </div>
           </div>
 
-          <div className="space-y-4">
-            <h3 className="text-sm font-medium">Minha Conta</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/conta" style={{ color: "#4c4b4b" }} className="hover:text-foreground">
-                  Minha Conta
-                </Link>
-              </li>
-              <li>
-                <Link href="/pedidos" style={{ color: "#4c4b4b" }} className="hover:text-foreground">
-                  Meus Pedidos
-                </Link>
-              </li>
-              <li>
-                <Link href="/carrinho" style={{ color: "#4c4b4b" }} className="hover:text-foreground">
-                  Carrinho
-                </Link>
-              </li>
-              <li>
-                <Link href="/rastreamento" style={{ color: "#4c4b4b" }} className="hover:text-foreground">
-                  Rastrear Pedido
-                </Link>
-              </li>
-            </ul>
-          </div>
+          {/* A seção "Minha Conta" foi removida daqui */}
 
           <div className="space-y-4">
             <h3 className="text-sm font-medium">Contato</h3>

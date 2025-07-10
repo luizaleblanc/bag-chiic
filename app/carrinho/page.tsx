@@ -133,7 +133,7 @@ export default function CartPage() {
                 <Link href="/produtos">Continuar Comprando</Link>
               </Button>
               <Button variant="ghost" onClick={clearCart}>
-                Limpar Carrinho
+                Limpar
               </Button>
             </div>
           </div>

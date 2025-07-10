@@ -68,22 +68,6 @@ export default function Header() {
 
           {/* Right side - User and Cart */}
           <div className="flex items-center space-x-4">
-            {/* User link */}
-            <div className="group relative">
-              <Link href="/cadastro">
-                {" "}
-                {/* Changed from /login to /cadastro */}
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="flex items-center space-x-1 text-sm text-black hover:text-black"
-                >
-                  <User className="h-4 w-4" />
-                  <span className="hidden group-hover:inline">Entrar</span>
-                </Button>
-              </Link>
-            </div>
-
             {/* Cart with hover */}
             <div className="group relative">
               <Button

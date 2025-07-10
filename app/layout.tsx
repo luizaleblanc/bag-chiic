@@ -5,7 +5,6 @@ import { Toaster } from "@/components/ui/toaster"
 import { cn } from "@/lib/utils"
 import { ThemeProvider } from "@/components/theme-provider"
 import { CartProvider } from "@/components/cart/cart-provider"
-import { AuthProvider } from "@/components/auth/auth-provider"
 import Header from "@/components/layout/header"
 import Footer from "@/components/layout/footer"
 
@@ -35,16 +34,14 @@ export default function RootLayout({
     <html lang="pt-BR" suppressHydrationWarning>
       <body className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <AuthProvider>
-            <CartProvider>
-              <div className="relative flex min-h-screen flex-col">
-                <Header />
-                <div className="flex-1">{children}</div>
-                <Footer />
-              </div>
-              <Toaster />
-            </CartProvider>
-          </AuthProvider>
+          <CartProvider>
+            <div className="relative flex min-h-screen flex-col">
+              <Header />
+              <div className="flex-1">{children}</div>
+              <Footer />
+            </div>
+            <Toaster />
+          </CartProvider>
         </ThemeProvider>
       </body>
     </html>
