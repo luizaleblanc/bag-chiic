@@ -53,24 +53,27 @@ export default function CheckoutPage() {
   const handleSubmitOrder = async () => {
     setIsProcessing(true)
 
-    // Simulate API call to process order
-    setTimeout(() => {
-      setIsProcessing(false)
-      clearCart() // Clear cart after successful order simulation
+    // Simulate API call to process order (e.g., a fetch request)
+    // For now, we'll just simulate the delay directly without setTimeout
+    await new Promise((resolve) => setTimeout(resolve, 500)) // Simulate a brief processing time
 
-      toast({
-        title: "Pedido realizado com sucesso!",
-        description: "Você receberá um e-mail com os detalhes do seu pedido.",
-      })
+    setIsProcessing(false)
+    clearCart() // Clear cart after successful order simulation
 
-      // Calculate the final amount based on payment method
-      const finalAmount = paymentMethod === "pix" ? totalWithShipping * 0.95 : totalWithShipping
-      const formattedAmount = finalAmount.toFixed(2).replace(".", "") // Format to remove decimal point for URL
+    toast({
+      title: "Pedido realizado com sucesso!",
+      description: "Você será redirecionado para o pagamento.",
+    })
 
-      // Redirect to Mercado Pago link with the final amount
-      const mercadoPagoLink = `https://link.mercadopago.com.br/bagchiice?amount=${formattedAmount}`
-      router.push(mercadoPagoLink)
-    }, 2000)
+    // Calculate the final amount based on payment method
+    const finalAmount = paymentMethod === "pix" ? totalWithShipping * 0.95 : totalWithShipping
+    // Mercado Pago expects amount in cents for some integrations, but for a direct link,
+    // it usually expects the decimal value. Let's keep it as is, but ensure it's a string.
+    const formattedAmount = finalAmount.toFixed(2) // Keep two decimal places for currency
+
+    // Redirect to Mercado Pago link with the final amount
+    const mercadoPagoLink = `https://link.mercadopago.com.br/bagchiice?amount=${formattedAmount}`
+    router.push(mercadoPagoLink)
   }
 
   // Render null or loading state while checking auth/cart
