@@ -63,8 +63,13 @@ export default function CheckoutPage() {
         description: "Você receberá um e-mail com os detalhes do seu pedido.",
       })
 
-      // In a real app, this would go to an order confirmation page
-      router.push("/") // Redirect to home for now
+      // Calculate the final amount based on payment method
+      const finalAmount = paymentMethod === "pix" ? totalWithShipping * 0.95 : totalWithShipping
+      const formattedAmount = finalAmount.toFixed(2).replace(".", "") // Format to remove decimal point for URL
+
+      // Redirect to Mercado Pago link with the final amount
+      const mercadoPagoLink = `https://link.mercadopago.com.br/bagchiice?amount=${formattedAmount}`
+      router.push(mercadoPagoLink)
     }, 2000)
   }
 
