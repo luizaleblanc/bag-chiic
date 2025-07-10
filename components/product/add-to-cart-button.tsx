@@ -51,7 +51,12 @@ export function AddToCartButton({ product, quantity = 1, className }: AddToCartB
   }
 
   return (
-    <Button onClick={handleAddToCart} disabled={isAdding} className={cn(className, "px-10 rounded-full")} size="lg">
+    <Button
+      onClick={handleAddToCart}
+      disabled={isAdding}
+      className={cn(className, "px-10 py-4 md:py-3 rounded-full")}
+      size="lg"
+    >
       {isAdding ? (
         "Adicionando..."
       ) : (
