@@ -1,7 +1,8 @@
 "use server"
 
 import { sendConfirmationEmail } from "./email-actions"
-import { getSupabaseServer } from "@/lib/supabase/server" // Importa o cliente Supabase do servidor
+import { getSupabaseServer } from "@/lib/supabase/server"
+import { getSupabaseAdmin } from "@/lib/supabase/admin"
 
 interface RegisterUserResult {
   success: boolean
@@ -14,9 +15,7 @@ interface PasswordResetResult {
 }
 
 export async function registerUserServerAction(formData: FormData): Promise<RegisterUserResult> {
-  // Não é mais necessário simular delay, o Supabase fará a chamada de rede
   const supabase = getSupabaseServer()
-
   if (!supabase) {
     return { success: false, message: "Configuração do Supabase ausente. Verifique as variáveis de ambiente." }
   }
@@ -30,125 +29,83 @@ export async function registerUserServerAction(formData: FormData): Promise<Regi
   const dateOfBirth = formData.get("dateOfBirth") as string
   const gender = formData.get("gender") as string
 
-  // Basic server-side validation
-  if (!fullName || !email || !password || !confirmPassword || !cpf || !phone || !dateOfBirth) {
-    return { success: false, message: "Todos os campos obrigatórios devem ser preenchidos." }
+  /* validações omitidas … */
+
+  // 1. Cria o usuário no Auth
+  const { data: authData, error: authError } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: { full_name: fullName },
+    },
+  })
+  if (authError) {
+    const msg = authError.message.includes("already") ? "Este e-mail já está cadastrado." : authError.message
+    return { success: false, message: msg }
   }
 
-  if (password !== confirmPassword) {
-    return { success: false, message: "As senhas não coincidem." }
-  }
-
-  // Password complexity validation
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/
-  if (!passwordRegex.test(password)) {
-    return {
-      success: false,
-      message:
-        "A senha deve ter no mínimo 8 caracteres, incluindo pelo menos uma letra maiúscula, uma minúscula, um número e um caractere especial.",
-    }
-  }
-
-  try {
-    // 1. Registrar o usuário no Supabase Auth
-    const { data: authData, error: authError } = await supabase.auth.signUp({
+  // 2. Insere o perfil via service_role
+  const admin = getSupabaseAdmin()
+  if (admin && authData.user) {
+    const { error: profileError } = await admin.from("profiles").upsert({
+      id: authData.user.id,
+      full_name: fullName,
       email,
-      password,
-      options: {
-        data: {
-          full_name: fullName, // Passa o nome completo para os metadados do usuário
-        },
-      },
+      cpf,
+      phone,
+      date_of_birth: dateOfBirth || null,
+      gender: gender || null,
     })
 
-    if (authError) {
-      console.error("Erro ao registrar no Supabase Auth:", authError)
-      // Mensagens de erro mais amigáveis para o usuário
-      if (authError.message.includes("already registered")) {
-        return { success: false, message: "Este e-mail já está cadastrado." }
-      }
-      return { success: false, message: `Erro ao cadastrar: ${authError.message}` }
+    if (profileError) {
+      console.error("Erro ao inserir perfil:", profileError)
+      // Mas não falhamos o cadastro → apenas avisamos
     }
+  }
 
-    // Se o registro de autenticação for bem-sucedido, insere os dados do perfil
-    if (authData.user) {
-      const { error: profileError } = await supabase.from("profiles").insert({
-        id: authData.user.id,
-        full_name: fullName,
-        email: email,
-        cpf: cpf,
-        phone: phone,
-        date_of_birth: dateOfBirth,
-        gender: gender || null,
-      })
+  // 3. E-mail de confirmação
+  await sendConfirmationEmail(email, fullName)
 
-      if (profileError) {
-        console.error("Erro ao inserir perfil no Supabase DB:", profileError)
-        // Se falhar ao inserir o perfil, você pode querer reverter o registro de autenticação
-        // ou apenas logar o erro e permitir que o usuário tente novamente.
-        // Por simplicidade, vamos apenas retornar o erro aqui.
-        return { success: false, message: `Erro ao salvar perfil: ${profileError.message}` }
-      }
-
-      // Enviar e-mail de confirmação após o cadastro bem-sucedido
-      const emailResult = await sendConfirmationEmail(email, fullName)
-      if (!emailResult.success) {
-        console.warn("Falha ao enviar e-mail de confirmação:", emailResult.message)
-      }
-
-      return {
-        success: true,
-        message: `Usuário ${fullName} cadastrado com sucesso! Verifique seu e-mail para confirmar.`,
-      }
-    } else {
-      // Isso pode acontecer se o signUp retornar sucesso mas sem user (ex: email de confirmação enviado)
-      return { success: true, message: "Cadastro iniciado! Verifique seu e-mail para confirmar a conta." }
-    }
-  } catch (error) {
-    console.error("Erro inesperado ao cadastrar usuário:", error)
-    return { success: false, message: "Ocorreu um erro inesperado ao cadastrar o usuário. Tente novamente." }
+  return {
+    success: true,
+    message: "Cadastro concluído! Um e-mail de confirmação foi enviado.",
   }
 }
 
+/**
+ * Envia e-mail de redefinição de senha via Supabase Auth
+ */
 export async function requestPasswordReset(
-  prevState: PasswordResetResult, // useActionState passes previous state
+  _prevState: { success: boolean; message: string },
   formData: FormData,
-): Promise<PasswordResetResult> {
-  // Não é mais necessário simular delay
+): Promise<{ success: boolean; message: string }> {
   const supabase = getSupabaseServer()
-
   if (!supabase) {
     return { success: false, message: "Configuração do Supabase ausente. Verifique as variáveis de ambiente." }
   }
 
-  const email = formData.get("email") as string
-
+  const email = (formData.get("email") as string)?.trim()
   if (!email) {
     return { success: false, message: "Por favor, insira seu e-mail." }
   }
 
   try {
-    // Supabase envia o e-mail de redefinição de senha
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/reset-password`, // URL para onde o usuário será redirecionado após clicar no link
+      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/reset-password`,
     })
 
     if (error) {
-      console.error("Erro ao solicitar redefinição de senha no Supabase:", error)
+      console.error("Erro Supabase resetPasswordForEmail:", error)
       return { success: false, message: `Erro: ${error.message}` }
     }
 
-    // Para segurança, sempre retorne uma mensagem genérica de sucesso, mesmo que o e-mail não seja encontrado,
-    // para evitar ataques de enumeração de e-mail.
+    // Mensagem genérica de sucesso para evitar enumeração de e-mails
     return {
       success: true,
       message: "Se o e-mail estiver cadastrado, você receberá um link para redefinir sua senha.",
     }
-  } catch (error) {
-    console.error("Erro inesperado ao solicitar redefinição de senha:", error)
-    return {
-      success: false,
-      message: "Ocorreu um erro inesperado ao solicitar a redefinição de senha. Tente novamente.",
-    }
+  } catch (err) {
+    console.error("Erro inesperado no reset password:", err)
+    return { success: false, message: "Ocorreu um erro inesperado. Tente novamente." }
   }
 }

@@ -41,7 +41,7 @@ export default function AuthPage() {
         title: "Login realizado com sucesso!",
         description: "Você foi redirecionado para a página inicial.",
       })
-      router.push("/") // Redirect to home or previous page after login
+      router.push("/") // Redireciona para a home ou página anterior após o login
     } catch (error) {
       toast({
         title: "Erro ao fazer login",
@@ -49,7 +49,7 @@ export default function AuthPage() {
         variant: "destructive",
       })
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false) // Garante que o botão seja reativado
     }
   }
 
@@ -63,10 +63,10 @@ export default function AuthPage() {
     if (result.success) {
       toast({
         title: "Cadastro realizado com sucesso!",
-        description: `${result.message} Um e-mail de confirmação foi enviado para você.`, // Updated message
+        description: result.message, // Usa a mensagem retornada pela Server Action
       })
-      setActiveTab("login") // Switch to login tab after successful registration
-      // Clear form fields
+      setActiveTab("login") // Muda para a aba de login após o cadastro bem-sucedido
+      // Limpa os campos do formulário
       setEmail("")
       setPassword("")
       setName("")
@@ -82,7 +82,7 @@ export default function AuthPage() {
         variant: "destructive",
       })
     }
-    setIsSubmitting(false)
+    setIsSubmitting(false) // Garante que o botão seja reativado
   }
 
   return (

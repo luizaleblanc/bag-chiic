@@ -1,16 +1,14 @@
-// Arquivo usado em Server Components / Server Actions
-import { cookies } from "next/headers"
-import { createServerClient } from "@supabase/ssr"
+// Utilizado em Server Components / Server Actions
+import { cookies as nextCookies } from "next/headers"
+import { createServerClient, type CookieOptions } from "@supabase/ssr"
 
 /**
  * Cria um cliente Supabase no contexto do servidor.
- * Se as variáveis não existirem, retorna `null` em vez de lançar erro.
+ * Retorna `null` caso as variáveis de ambiente não estejam definidas.
  */
 export function getSupabaseServer() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const key =
-    // Tente usar a service_role em Server Actions; senão, use a anon key
-    process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
   if (!url || !key) {
     console.warn(
@@ -20,6 +18,21 @@ export function getSupabaseServer() {
     return null
   }
 
-  // Retorna o cliente Supabase configurado para uso em Server Components/Actions
-  return createServerClient(url, key, { cookies })
+  // Adapter: traduz a API do cookies() do Next.js para o formato que o SDK espera
+  const cookieStore = nextCookies()
+
+  const cookieAdapter = {
+    get: (name: string) => {
+      return cookieStore.get(name)?.value
+    },
+    set: (name: string, value: string, opts?: CookieOptions) => {
+      // `opts` pode conter path, maxAge, etc.
+      cookieStore.set({ name, value, ...opts })
+    },
+    remove: (name: string, opts?: CookieOptions) => {
+      cookieStore.set({ name, value: "", ...opts })
+    },
+  }
+
+  return createServerClient(url, key, { cookies: cookieAdapter })
 }
