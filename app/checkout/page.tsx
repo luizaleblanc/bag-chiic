@@ -54,7 +54,7 @@ export default function CheckoutPage() {
 
     toast({
       title: "Pedido realizado com sucesso!",
-      description: "Você será redirecionado para o pagamento.",
+      description: "Você será redirecionado para o pagamento. Notificação interna enviada.",
     })
 
     const finalAmount = totalWithShipping
