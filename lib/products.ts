@@ -144,8 +144,8 @@ const products: Product[] = [
   },
   {
     id: "5",
-    name: "Clutch BlackE",
-    slug: "clutch-blacke",
+    name: "Clutch Black", // Nome atualizado
+    slug: "clutch-black", // Slug atualizado
     description:
       "Uma clutch sofisticada e versátil, perfeita para eventos especiais ou para adicionar um toque de elegância ao seu dia a dia. Com design minimalista e fecho moderno.",
     price: 120.0,
@@ -172,8 +172,8 @@ const products: Product[] = [
   },
   {
     id: "6",
-    name: "Carteira AnimalPrint",
-    slug: "carteira-animalprint",
+    name: "Carteira AnimalPrint", // Nome atualizado
+    slug: "carteira-animalprint", // Slug atualizado
     description:
       "A Carteira AnimalPrint é a união perfeita entre praticidade e ousadia. Com design compacto e sofisticado, ela traz a clássica estampa com acabamento de alta qualidade, ideal para quem deseja um toque de personalidade no look. Pode ser usada tanto na mão quanto dentro da bolsa principal. Um acessório versátil que combina com produções do dia a dia ou ocasiões especiais.",
     price: 95.0,

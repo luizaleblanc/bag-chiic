@@ -4,27 +4,31 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { ChevronLeft } from "lucide-react" // Removed CreditCard, Landmark, QrCode as they are no longer needed
+import { ChevronLeft } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Separator } from "@/components/ui/separator"
-// Removed Tabs, TabsContent, TabsList, TabsTrigger as payment method section is removed
 import { useToast } from "@/components/ui/use-toast"
 import { useCart } from "@/components/cart/use-cart"
 import { formatCurrency } from "@/lib/utils"
 import { AddressForm } from "@/components/checkout/address-form"
-// Removed CreditCardForm, PixPayment, BoletoPayment as payment method section is removed
+import { sendOrderMessage } from "@/app/message-actions" // Import the new Server Action
 
 export default function CheckoutPage() {
   const router = useRouter()
   const { toast } = useToast()
   const { items, cartTotal, clearCart } = useCart()
   const [isProcessing, setIsProcessing] = useState(false)
-  // Removed paymentMethod state as it's no longer needed
   const [shippingMethod, setShippingMethod] = useState("standard")
+
+  // State for customer information
+  const [customerName, setCustomerName] = useState("")
+  const [customerEmail, setCustomerEmail] = useState("")
+  const [customerCpf, setCustomerCpf] = useState("")
+  const [customerPhone, setCustomerPhone] = useState("")
 
   const shippingCost = shippingMethod === "express" ? 25.9 : 15.9
   const totalWithShipping = cartTotal + shippingCost
@@ -39,7 +43,11 @@ export default function CheckoutPage() {
   const handleSubmitOrder = async () => {
     setIsProcessing(true)
 
-    await new Promise((resolve) => setTimeout(resolve, 500)) // Simulate a brief processing time
+    // Simulate a brief processing time
+    await new Promise((resolve) => setTimeout(resolve, 500))
+
+    // Send message to the specified number (server-side)
+    await sendOrderMessage(customerName, customerEmail, totalWithShipping)
 
     setIsProcessing(false)
     clearCart() // Clear cart after successful order simulation
@@ -49,9 +57,8 @@ export default function CheckoutPage() {
       description: "Você será redirecionado para o pagamento.",
     })
 
-    // The payment method is now implicitly Mercado Pago, no need for conditional logic
     const finalAmount = totalWithShipping
-    const formattedAmount = finalAmount.toFixed(2) // Keep two decimal places for currency
+    const formattedAmount = finalAmount.toFixed(2)
 
     // Redirect to Mercado Pago link with the final amount
     const mercadoPagoLink = `https://link.mercadopago.com.br/bagchiice?amount=${formattedAmount}`
@@ -82,19 +89,40 @@ export default function CheckoutPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="name">Nome Completo</Label>
-                <Input id="name" placeholder="Seu nome completo" />
+                <Input
+                  id="name"
+                  placeholder="Seu nome completo"
+                  value={customerName}
+                  onChange={(e) => setCustomerName(e.target.value)}
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email">E-mail</Label>
-                <Input id="email" type="email" placeholder="seu@email.com" />
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="seu@email.com"
+                  value={customerEmail}
+                  onChange={(e) => setCustomerEmail(e.target.value)}
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="cpf">CPF</Label>
-                <Input id="cpf" placeholder="000.000.000-00" />
+                <Input
+                  id="cpf"
+                  placeholder="000.000.000-00"
+                  value={customerCpf}
+                  onChange={(e) => setCustomerCpf(e.target.value)}
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="phone">Telefone</Label>
-                <Input id="phone" placeholder="(00) 00000-0000" />
+                <Input
+                  id="phone"
+                  placeholder="(00) 00000-0000"
+                  value={customerPhone}
+                  onChange={(e) => setCustomerPhone(e.target.value)}
+                />
               </div>
             </div>
           </div>
@@ -129,8 +157,6 @@ export default function CheckoutPage() {
               </div>
             </RadioGroup>
           </div>
-
-          {/* Removed Payment Method section entirely */}
         </div>
 
         <div className="lg:col-span-1">
@@ -164,7 +190,6 @@ export default function CheckoutPage() {
                 <span className="text-muted-foreground">Frete</span>
                 <span>{formatCurrency(shippingCost)}</span>
               </div>
-              {/* Removed Pix discount display as payment method section is removed */}
             </div>
 
             <Separator />
