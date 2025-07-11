@@ -48,7 +48,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center">
                 <Phone className="mr-2 h-4 w-4" style={{ color: "#4c4b4b" }} />
-                <span style={{ color: "#4c4b4b" }}>(61) 99224-0535</span>
+                <span style={{ color: "#4c4b4b" }}>(61) 99366-1734</span>
               </li>
             </ul>
           </div>

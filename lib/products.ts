@@ -33,9 +33,9 @@ const products: Product[] = [
     name: "Tiracolo Black",
     slug: "bolsa-tiracolo-black",
     description:
-      "Sofisticação e versatilidade em cada detalhe. A Bolsa Tiracolo Black é a escolha perfeita para quem busca elegância e praticidade no dia a dia. Seu design minimalista e atemporal combina com qualquer look, do casual ao sofisticado. Um item indispensável para mulheres que valorizam funcionalidade sem abrir mão da classe.",
+      "Sofisticação e versatilidade em cada detalhe. A Bolsa Tiracolo Black é a escolha perfeita para quem busca elegância e praticidade no dia a dia. Seu design minimalista e atemporal combina com qualquer look, do casual ao sofisticado. Um item indispensável para mulheres que valorizam funcionalidade sem abrir mão da classe. OBS.: Produto feito a base de cola, contraindicado utilizar em superfícies molhadas.",
     price: 105.0,
-    images: ["/images/bolsa-tiracolo-black.jpg"],
+    images: ["/images/tiracolo-black-2.jpeg", "/images/tiracolo-black.jpeg"],
     category: "Bolsas",
     rating: 4.5,
     isNew: true,
@@ -62,9 +62,9 @@ const products: Product[] = [
     name: "Bolsa Meia-Lua",
     slug: "bolsa-meia-lua",
     description:
-      "Design moderno, formato curvo e aquele toque de estilo que transforma qualquer look. A Bolsa Meia-Lua é prática, elegante e cabe tudo o que você precisa — sem perder a leveza e o charme. Ela é perfeita para te acompanhar do café da manhã ao happy hour. É a peça que faltava no seu guarda-roupa.",
+      "Design moderno, formato curvo e aquele toque de estilo que transforma qualquer look. A Bolsa Meia-Lua é prática, elegante e cabe tudo o que você precisa — sem perder a leveza e o charme. Ela é perfeita para te acompanhar do café da manhã ao happy hour. É a peça que faltava no seu guarda-roupa. OBS.: Produto feito a base de cola, contraindicado utilizar em superfícies molhadas.",
     price: 185.0,
-    images: ["/images/bolsa-meia-lua.jpeg"],
+    images: ["/images/bolsa-meia-lua.jpeg", "/images/meia-lua.jpeg"],
     category: "Bolsas",
     rating: 4.2,
     isNew: false,
@@ -90,9 +90,9 @@ const products: Product[] = [
     name: "Bolsa Safira",
     slug: "bolsa-safira",
     description:
-      "Com um design sofisticado e presença marcante, a Bolsa Safira é o acessório ideal para quem busca elegância atemporal. Seu formato estruturado e acabamento refinado valorizam qualquer produção — do look de trabalho ao evento especial. Confeccionada em material de alta qualidade, ela oferece versatilidade no uso e muita personalidade. Possui compartimento espaçoso, forro interno em tecido e fechamento seguro magnético, garantindo praticidade com muito estilo.",
+      "Com um design sofisticado e presença marcante, a Bolsa Safira é o acessório ideal para quem busca elegância atemporal. Seu formato estruturado e acabamento refinado valorizam qualquer produção — do look de trabalho ao evento especial. Confeccionada em material de alta qualidade, ela oferece versatilidade no uso e muita personalidade. Possui compartimento espaçoso, forro interno em tecido e fechamento seguro magnético, garantindo praticidade com muito estilo. OBS.: Produto feito a base de cola, contraindicado utilizar em superfícies molhadas.",
     price: 205.0,
-    images: ["/images/bolsa-safira.jpeg"],
+    images: ["/images/bolsa-safira.jpeg", "/images/safira.jpeg"],
     category: "Bolsas",
     rating: 4.8,
     isNew: true,
@@ -119,9 +119,9 @@ const products: Product[] = [
     name: "Bolsa Baú",
     slug: "bolsa-bau",
     description:
-      "Elegância que se impõe. A Bolsa Baú é um verdadeiro clássico: acabamento impecável e um design que une sofisticação e funcionalidade. Seu formato firme transmite presença e estilo, enquanto o espaço interno amplo acomoda tudo o que você precisa com praticidade. Ideal para te acompanhar da rotina a eventos especiais.",
+      "Elegância que se impõe. A Bolsa Baú é um verdadeiro clássico: acabamento impecável e um design que une sofisticação e funcionalidade. Seu formato firme transmite presença e estilo, enquanto o espaço interno amplo acomoda tudo o que você precisa com praticidade. Ideal para te acompanhar da rotina a eventos especiais. OBS.: Produto feito a base de cola, contraindicado utilizar em superfícies molhadas.",
     price: 210.0,
-    images: ["/images/bolsa-bau-new.jpeg"],
+    images: ["/images/bolsa-bau-new.jpeg", "/images/baú.jpeg"],
     category: "Bolsas",
     rating: 4.0,
     isNew: false,
@@ -147,9 +147,9 @@ const products: Product[] = [
     name: "Clutch Black", // Nome atualizado
     slug: "clutch-black", // Slug atualizado
     description:
-      "Uma clutch sofisticada e versátil, perfeita para eventos especiais ou para adicionar um toque de elegância ao seu dia a dia. Com design minimalista e fecho moderno.",
+      "Uma clutch sofisticada e versátil, perfeita para eventos especiais ou para adicionar um toque de elegância ao seu dia a dia. Com design minimalista e fecho moderno. OBS.: Produto feito a base de cola, contraindicado utilizar em superfícies molhadas.",
     price: 120.0,
-    images: ["/images/bolsa-clutch-azul.jpeg"],
+    images: ["/images/clutch black.jpeg", "/images/bolsa-clutch-azul.jpeg"],
     category: "Bolsas",
     rating: 4.7,
     isNew: true,
@@ -164,10 +164,11 @@ const products: Product[] = [
     features: ["Fecho magnético", "Design compacto", "Material premium"],
     tags: ["bolsa", "clutch", "elegante", "azul"],
     specs: {
-      Dimensões: "20cm comprimento x 15cm altura x 5cm largura",
-      "Revestimento Externo": "Sintético azul escuro",
-      "Revestimento Interno": "Forro em tecido",
-      Fecho: "Metálico",
+      Dimensões: "14.5cm comprimento x 14.5cm altura x 7cm largura",
+      "Revestimento Externo": "Couvim Flex Dune Preto",
+      "Revestimento Interno": "Tecido preto liso",
+      Ferragens: "Alça de argola dourada",
+      Fecho: "Dourado",
     },
   },
   {
@@ -175,7 +176,7 @@ const products: Product[] = [
     name: "Carteira AnimalPrint", // Nome atualizado
     slug: "carteira-animalprint", // Slug atualizado
     description:
-      "A Carteira AnimalPrint é a união perfeita entre praticidade e ousadia. Com design compacto e sofisticado, ela traz a clássica estampa com acabamento de alta qualidade, ideal para quem deseja um toque de personalidade no look. Pode ser usada tanto na mão quanto dentro da bolsa principal. Um acessório versátil que combina com produções do dia a dia ou ocasiões especiais.",
+      "A Carteira AnimalPrint é a união perfeita entre praticidade e ousadia. Com design compacto e sofisticado, ela traz a clássica estampa com acabamento de alta qualidade, ideal para quem deseja um toque de personalidade no look. Pode ser usada tanto na mão quanto dentro da bolsa principal. Um acessório versátil que combina com produções do dia a dia ou ocasiões especiais. OBS.: Produto feito a base de cola, contraindicado utilizar em superfícies molhadas.",
     price: 95.0,
     images: ["/images/bolsa-carteira-animalprint.jpeg"],
     category: "Bolsas",
@@ -203,7 +204,7 @@ const products: Product[] = [
     name: "Baú VM Cores",
     slug: "bau-vm-cores",
     description:
-      "A Bolsa Baú VM Cores é sinônimo de charme e funcionalidade. Com design estruturado no estilo baú e acabamento multicolorido vibrante, ela traz um visual marcante e sofisticado. Seu espaço interno é amplo, ideal para acompanhar sua rotina com praticidade sem abrir mão do estilo. Um acessório versátil que se destaca em qualquer ocasião.",
+      "A Bolsa Baú VM Cores é sinônimo de charme e funcionalidade. Com design estruturado no estilo baú e acabamento multicolorido vibrante, ela traz um visual marcante e sofisticado. Seu espaço interno é amplo, ideal para acompanhar sua rotina com praticidade sem abrir mão do estilo. Um acessório versátil que se destaca em qualquer ocasião. OBS.: Produto feito a base de cola, contraindicado utilizar em superfícies molhadas.",
     price: 150.0,
     images: ["/images/bolsa-bau-vm-cores.jpeg"],
     category: "Bolsas",
@@ -225,6 +226,62 @@ const products: Product[] = [
       "Revestimento Interno": "Forro em tecido Vermelho",
       Tampa: "Em tecido Waterblock",
       Alça: "Argola (12cm)",
+    },
+  },
+  {
+    id: "8",
+    name: "Meia-Lua Red",
+    slug: "meia-lua-red",
+    description:
+      "Com um design moderno e formato curvo, a Bolsa Meia-Lua Red é a peça que faltava para adicionar um toque de cor e estilo ao seu visual. Prática e elegante, ela é perfeita para te acompanhar do dia a dia a eventos especiais, carregando o essencial com muito charme. OBS.: Produto feito a base de cola, contraindicado utilizar em superfícies molhadas.",
+    price: 185.0,
+    images: ["/images/meia-lua-red.jpeg", "/images/meia-lua-red-2.jpeg"],
+    category: "Bolsas",
+    rating: 4.4,
+    isNew: true,
+    stock: 25,
+    sku: "ML-RED-001",
+    weight: 0.5,
+    dimensions: {
+      width: 21.0,
+      height: 15.0,
+      length: 7.0,
+    },
+    features: ["Design curvo", "Cor vibrante", "Fecho magnético", "Alça de mão"],
+    tags: ["bolsa", "meia-lua", "vermelha", "elegante"],
+    specs: {
+      Dimensões: "21cm comprimento x 15cm altura x 7cm largura",
+      "Revestimento Externo": "Sintético Courvim Pérola",
+      "Revestimento Interno": "Forro em tecido claro",
+      Fecho: "Prata",
+    },
+  },
+  {
+    id: "9",
+    name: "Clutch Listrada",
+    slug: "clutch-listrada",
+    description:
+      "A Clutch Listrada é a combinação perfeita de estilo e modernidade. Com um design arrojado em listras pretas e brancas e uma alça de mão integrada, ela é ideal para quem busca um acessório que se destaque. Perfeita para eventos noturnos ou para dar um toque fashion ao seu look diário. OBS.: Produto feito a base de cola, contraindicado utilizar em superfícies molhadas.",
+    price: 160.0,
+    images: ["/images/clutch-listrada.jpeg", "/images/clutch-listrada-2.jpeg"],
+    category: "Bolsas",
+    rating: 4.6,
+    isNew: true,
+    stock: 30,
+    sku: "CLT-LST-001",
+    weight: 0.4,
+    dimensions: {
+      width: 28.0,
+      height: 18.0,
+      length: 6.0,
+    },
+    features: ["Design listrado", "Alça de mão integrada", "Fecho magnético", "Compartimento interno"],
+    tags: ["bolsa", "clutch", "listrada", "preto e branco", "moderna"],
+    specs: {
+      "Revestimento Externo": "Sintético off white",
+      "Revestimento Interno": "Forro em tecido poá",
+      Fechamento: "Botão imã",
+      Medidas: "30cm largura x 22.5cm altura (sem costura)",
     },
   },
 ]
@@ -265,11 +322,11 @@ export function searchProducts(query: string) {
 
   return products.filter((product) => {
     const searchableText = `
-    ${product.name.toLowerCase()} 
-    ${product.description.toLowerCase()} 
-    ${product.category.toLowerCase()} 
-    ${product.tags.join(" ").toLowerCase()}
-  `
+${product.name.toLowerCase()} 
+${product.description.toLowerCase()} 
+${product.category.toLowerCase()} 
+${product.tags.join(" ").toLowerCase()}
+`
 
     return searchTerms.every((term) => searchableText.includes(term))
   })
