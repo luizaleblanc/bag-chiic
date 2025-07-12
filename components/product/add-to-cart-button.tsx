@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { useToast } from "@/components/ui/use-toast"
 import { useCart } from "@/components/cart/use-cart"
 import { cn } from "@/lib/utils"
+import { getProductById } from "@/lib/products"
 
 interface Product {
   id: string
@@ -14,6 +15,7 @@ interface Product {
   price: number
   slug: string
   images: string[] // Changed from image?: string
+  category?: string
 }
 
 interface AddToCartButtonProps {
@@ -41,12 +43,35 @@ export function AddToCartButton({ product, quantity = 1, className }: AddToCartB
         image: product.images?.[0] || "/placeholder.svg", // Use the first image or fallback to placeholder
       })
 
-      setIsAdding(false)
+      if (product.category === "Bolsas") {
+        const freeWallet = getProductById("10") // ID da "Carteira AnimalPrint"
+        if (freeWallet) {
+          addItem({
+            id: freeWallet.id,
+            name: freeWallet.name,
+            price: 0, // Preço zero para o brinde
+            quantity: 1,
+            slug: freeWallet.slug,
+            image: freeWallet.images?.[0] || "/placeholder.svg",
+          })
+          toast({
+            title: "Produto adicionado e brinde incluído!",
+            description: `${product.name} foi adicionado ao seu carrinho. Você ganhou um ${freeWallet.name} de brinde!`,
+          })
+        } else {
+          toast({
+            title: "Produto adicionado",
+            description: `${product.name} foi adicionado ao seu carrinho.`,
+          })
+        }
+      } else {
+        toast({
+          title: "Produto adicionado",
+          description: `${product.name} foi adicionado ao seu carrinho.`,
+        })
+      }
 
-      toast({
-        title: "Produto adicionado",
-        description: `${product.name} foi adicionado ao seu carrinho.`,
-      })
+      setIsAdding(false)
     }, 500)
   }
 

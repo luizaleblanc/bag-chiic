@@ -2,14 +2,15 @@ import { Suspense } from "react"
 import { Truck, CreditCard, Clock, Shield } from "lucide-react"
 import { Skeleton } from "@/components/ui/skeleton"
 import { FeaturedProducts } from "@/components/product/featured-products"
-import { HeroBanner } from "@/components/hero-banner"
+import { HeroCarousel } from "@/components/hero-carousel"
 import { FreeShippingBanner } from "@/components/free-shipping-banner"
 
 export default function Home() {
   return (
     <main className="flex-1">
-      {/* Hero Banner */}
-      <HeroBanner />
+      {/* Hero Carousel */}
+      <HeroCarousel />
+
       {/* Features */}
       <section className="border-t border-b py-6 bg-white">
         <div className="container">
@@ -37,8 +38,10 @@ export default function Home() {
           </div>
         </div>
       </section>
+
       {/* Free Shipping Banner - Full Width */}
       <FreeShippingBanner />
+
       {/* Products */}
       <section className="py-8 bg-zinc-50">
         <div className="container">

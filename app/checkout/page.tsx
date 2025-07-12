@@ -16,10 +16,6 @@ import { useCart } from "@/components/cart/use-cart"
 import { formatCurrency } from "@/lib/utils"
 import { AddressForm } from "@/components/checkout/address-form"
 import { sendOrderMessage } from "@/app/message-actions"
-import { PixPayment } from "@/components/checkout/pix-payment" // Keep existing
-import { BoletoPayment } from "@/components/checkout/boleto-payment" // Keep existing
-import { CreditCardForm } from "@/components/checkout/credit-card-form" // Keep existing
-import { PagbankCreditCardForm } from "@/components/checkout/pagbank-credit-card-form" // New import
 
 export default function CheckoutPage() {
   const router = useRouter()
@@ -27,7 +23,11 @@ export default function CheckoutPage() {
   const { items, cartTotal, clearCart } = useCart()
   const [isProcessing, setIsProcessing] = useState(false)
   const [shippingMethod, setShippingMethod] = useState("standard")
-  const [paymentMethod, setPaymentMethod] = useState("credit-card") // New state for payment method
+  // Remove the entire "Payment Method" section
+  // 1. Remove the `paymentMethod` state and `setPaymentMethod` from `useState`.
+  // 2. Remove the `paymentMethod` prop from `PagbankCreditCardForm`.
+  // 3. Remove the entire `div` block that starts with ` {/* Payment Method */}` and ends before ` {/* The main "Finalizar Pedido" button... */}`. This block contains the `RadioGroup` for payment methods and all the payment forms.
+  // 4. Simplify the "Finalizar Pedido" button. Remove all conditional rendering based on `paymentMethod` and keep only one `Button` that calls `handleFinalizeOrder`.
 
   // State for customer information
   const [customerName, setCustomerName] = useState("")
@@ -180,62 +180,6 @@ export default function CheckoutPage() {
               </div>
             </RadioGroup>
           </div>
-
-          {/* Payment Method */}
-          <div className="bg-white rounded-lg border shadow-sm p-6">
-            <h2 className="text-lg font-bold mb-4">Método de Pagamento</h2>
-            <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod} className="space-y-4">
-              <div className="border p-4 rounded-md">
-                <div className="flex items-center space-x-2 mb-3">
-                  <RadioGroupItem value="credit-card" id="credit-card" />
-                  <Label htmlFor="credit-card" className="font-normal cursor-pointer">
-                    Cartão de Crédito (Mercado Pago)
-                  </Label>
-                </div>
-                {paymentMethod === "credit-card" && <CreditCardForm amount={totalWithShipping} />}
-              </div>
-
-              <div className="border p-4 rounded-md">
-                <div className="flex items-center space-x-2 mb-3">
-                  <RadioGroupItem value="pagbank-credit-card" id="pagbank-credit-card" />
-                  <Label htmlFor="pagbank-credit-card" className="font-normal cursor-pointer">
-                    Cartão de Crédito (PagBank)
-                  </Label>
-                </div>
-                {paymentMethod === "pagbank-credit-card" && (
-                  <PagbankCreditCardForm
-                    amount={totalWithShipping}
-                    customerName={customerName}
-                    customerEmail={customerEmail}
-                    onPaymentSuccess={handlePagbankPaymentSuccess}
-                    onPaymentError={handlePagbankPaymentError}
-                    isProcessing={isProcessing}
-                    setIsProcessing={setIsProcessing}
-                  />
-                )}
-              </div>
-
-              <div className="border p-4 rounded-md">
-                <div className="flex items-center space-x-2 mb-3">
-                  <RadioGroupItem value="pix" id="pix" />
-                  <Label htmlFor="pix" className="font-normal cursor-pointer">
-                    PIX (5% de desconto)
-                  </Label>
-                </div>
-                {paymentMethod === "pix" && <PixPayment amount={totalWithShipping} />}
-              </div>
-
-              <div className="border p-4 rounded-md">
-                <div className="flex items-center space-x-2 mb-3">
-                  <RadioGroupItem value="boleto" id="boleto" />
-                  <Label htmlFor="boleto" className="font-normal cursor-pointer">
-                    Boleto Bancário
-                  </Label>
-                </div>
-                {paymentMethod === "boleto" && <BoletoPayment amount={totalWithShipping} />}
-              </div>
-            </RadioGroup>
-          </div>
         </div>
 
         <div className="lg:col-span-1">
@@ -246,9 +190,11 @@ export default function CheckoutPage() {
             <div className="max-h-80 overflow-y-auto space-y-4 pr-2">
               {items.map((item) => (
                 <div key={item.id} className="flex space-x-4">
-                  <div className="relative h-16 w-16 rounded-md overflow-hidden border flex-shrink-0">
-                    <Image src={item.image || "/placeholder.svg"} alt={item.name} fill className="object-cover" />
-                  </div>
+                  {item.id !== "10" && (
+                    <div className="relative h-16 w-16 rounded-md overflow-hidden border flex-shrink-0">
+                      <Image src={item.image || "/placeholder.svg"} alt={item.name} fill className="object-cover" />
+                    </div>
+                  )}
                   <div className="flex-1">
                     <h3 className="font-medium text-sm">{item.name}</h3>
                     <p className="text-sm text-muted-foreground">Qtd: {item.quantity}</p>
@@ -279,26 +225,9 @@ export default function CheckoutPage() {
             </div>
 
             {/* The main "Finalizar Pedido" button is now only for Mercado Pago or if no specific payment method handles it */}
-            {paymentMethod === "credit-card" && (
-              <Button onClick={handleFinalizeOrder} className="w-full" size="lg" disabled={isProcessing}>
-                {isProcessing ? "Processando..." : "Finalizar Pedido (Mercado Pago)"}
-              </Button>
-            )}
-            {paymentMethod === "pix" && (
-              <Button onClick={handleFinalizeOrder} className="w-full" size="lg" disabled={isProcessing}>
-                {isProcessing ? "Processando..." : "Finalizar Pedido (PIX)"}
-              </Button>
-            )}
-            {paymentMethod === "boleto" && (
-              <Button onClick={handleFinalizeOrder} className="w-full" size="lg" disabled={isProcessing}>
-                {isProcessing ? "Processando..." : "Finalizar Pedido (Boleto)"}
-              </Button>
-            )}
-            {paymentMethod === "pagbank-credit-card" && (
-              <p className="text-sm text-center text-muted-foreground">
-                O botão de pagamento está no formulário do PagBank acima.
-              </p>
-            )}
+            <Button onClick={handleFinalizeOrder} className="w-full" size="lg" disabled={isProcessing}>
+              {isProcessing ? "Processando..." : "Finalizar Pedido"}
+            </Button>
 
             <p className="text-xs text-center text-muted-foreground">
               Ao finalizar seu pedido, você concorda com nossos{" "}

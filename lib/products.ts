@@ -284,6 +284,33 @@ const products: Product[] = [
       Medidas: "30cm largura x 22.5cm altura (sem costura)",
     },
   },
+  {
+    id: "10",
+    name: "porta-cartões",
+    slug: "porta-cartao-essencial",
+    description:
+      "Um porta-cartão compacto e elegante, ideal para organizar seus cartões e documentos. Perfeito para o dia a dia ou para complementar sua bolsa.",
+    price: 0.0, // This will be the free gift
+    images: [],
+    category: "Acessórios",
+    rating: 4.9,
+    isNew: true,
+    stock: 100,
+    sku: "PC-001",
+    weight: 0.05,
+    dimensions: {
+      width: 10.0,
+      height: 7.0,
+      length: 1.0,
+    },
+    features: ["Design slim", "Compartimentos para múltiplos cartões", "Material durável"],
+    tags: ["acessório", "carteira", "porta-cartão"],
+    specs: {
+      Dimensões: "10cm comprimento x 7cm altura x 1cm largura",
+      Material: "Couro sintético",
+      Cores: "Variadas",
+    },
+  },
 ]
 
 export function getProducts(limit?: number) {

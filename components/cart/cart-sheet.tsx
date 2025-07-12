@@ -37,17 +37,19 @@ export function CartSheet({ open, onOpenChange }: CartSheetProps) {
               <div className="space-y-6">
                 {items.map((item) => (
                   <div key={item.id} className="flex items-start gap-4">
-                    <div className="relative h-16 w-16 overflow-hidden rounded-md border">
-                      <Image
-                        src={item.image || "/placeholder.svg"}
-                        alt={item.name}
-                        fill
-                        className="object-cover"
-                        onError={(e) => {
-                          e.currentTarget.src = "/placeholder.svg"
-                        }}
-                      />
-                    </div>
+                    {item.id !== "10" && (
+                      <div className="relative h-16 w-16 overflow-hidden rounded-md border">
+                        <Image
+                          src={item.image || "/placeholder.svg"}
+                          alt={item.name}
+                          fill
+                          className="object-cover"
+                          onError={(e) => {
+                            e.currentTarget.src = "/placeholder.svg"
+                          }}
+                        />
+                      </div>
+                    )}
                     <div className="flex-1 space-y-1">
                       <div className="flex items-start justify-between gap-2">
                         <Link

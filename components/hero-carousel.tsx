@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react"
 import Image from "next/image"
-import Link from "next/link"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -11,30 +10,13 @@ import { cn } from "@/lib/utils"
 const slides = [
   {
     id: 1,
-    title: "Ofertas Imperdíveis",
-    description: "Até 50% de desconto em produtos selecionados",
-    image: "/placeholder.svg?key=004nj",
-    cta: "Comprar Agora",
-    url: "/ofertas",
-    color: "from-blue-600 to-purple-600",
+    image: "/images/banner-bag-chic.png",
+    alt: "Bag Chic - As suas bolsas favoritas estão de cara nova",
   },
   {
     id: 2,
-    title: "Nova Coleção de Verão",
-    description: "Descubra as últimas tendências para a estação",
-    image: "/placeholder.svg?key=5twnc",
-    cta: "Ver Coleção",
-    url: "/categorias/moda",
-    color: "from-orange-500 to-pink-500",
-  },
-  {
-    id: 3,
-    title: "Tecnologia em Promoção",
-    description: "Os melhores gadgets com preços especiais",
-    image: "/placeholder.svg?key=4uwjg",
-    cta: "Explorar",
-    url: "/categorias/eletronicos",
-    color: "from-emerald-500 to-teal-500",
+    image: "/images/promo-imperdivel.png",
+    alt: "Promo Imperdível - Na compra de qualquer bolsa, ganhe um porta-cartão",
   },
 ]
 
@@ -58,15 +40,7 @@ export function HeroCarousel() {
         {slides.map((slide) => (
           <div key={slide.id} className="relative min-w-full">
             <div className="relative h-[300px] md:h-[400px] lg:h-[500px] w-full">
-              <Image src={slide.image || "/placeholder.svg"} alt={slide.title} fill className="object-cover" priority />
-              <div className={cn("absolute inset-0 bg-gradient-to-r opacity-70", slide.color)} />
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white p-6">
-                <h2 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4">{slide.title}</h2>
-                <p className="text-sm md:text-lg mb-4 md:mb-6 max-w-md">{slide.description}</p>
-                <Button asChild size="lg" variant="secondary">
-                  <Link href={slide.url}>{slide.cta}</Link>
-                </Button>
-              </div>
+              <Image src={slide.image || "/placeholder.svg"} alt={slide.alt} fill className="object-cover" priority />
             </div>
           </div>
         ))}
