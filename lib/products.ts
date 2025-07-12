@@ -149,7 +149,7 @@ const products: Product[] = [
     description:
       "Uma clutch sofisticada e versátil, perfeita para eventos especiais ou para adicionar um toque de elegância ao seu dia a dia. Com design minimalista e fecho moderno. OBS.: Produto feito a base de cola, contraindicado utilizar em superfícies molhadas.",
     price: 205.0,
-    images: ["/images/clutch black.jpeg", "/images/bolsa-clutch-azul.jpeg"],
+    images: ["/images/clutch black.jpeg", "/images/clutch black 2.jpeg"],
     category: "Bolsas",
     rating: 4.7,
     isNew: true,
@@ -178,7 +178,7 @@ const products: Product[] = [
     description:
       "A Carteira AnimalPrint é a união perfeita entre praticidade e ousadia. Com design compacto e sofisticado, ela traz a clássica estampa com acabamento de alta qualidade, ideal para quem deseja um toque de personalidade no look. Pode ser usada tanto na mão quanto dentro da bolsa principal. Um acessório versátil que combina com produções do dia a dia ou ocasiões especiais. OBS.: Produto feito a base de cola, contraindicado utilizar em superfícies molhadas.",
     price: 95.0,
-    images: ["/images/bolsa-carteira-animalprint.jpeg"],
+    images: ["/images/bolsa-carteira-animalprint.jpeg", "/images/carteira animalprint 2.jpeg"],
     category: "Bolsas",
     rating: 4.3,
     isNew: true,
@@ -206,7 +206,7 @@ const products: Product[] = [
     description:
       "A Bolsa Baú VM Cores é sinônimo de charme e funcionalidade. Com design estruturado no estilo baú e acabamento multicolorido vibrante, ela traz um visual marcante e sofisticado. Seu espaço interno é amplo, ideal para acompanhar sua rotina com praticidade sem abrir mão do estilo. Um acessório versátil que se destaca em qualquer ocasião. OBS.: Produto feito a base de cola, contraindicado utilizar em superfícies molhadas.",
     price: 150.0,
-    images: ["/images/bolsa-bau-vm-cores.jpeg"],
+    images: ["/images/bolsa-bau-vm-cores.jpeg", "/images/baú vm cores 2.jpeg"],
     category: "Bolsas",
     rating: 4.6,
     isNew: true,
@@ -235,7 +235,7 @@ const products: Product[] = [
     description:
       "Com um design moderno e formato curvo, a Bolsa Meia-Lua Red é a peça que faltava para adicionar um toque de cor e estilo ao seu visual. Prática e elegante, ela é perfeita para te acompanhar do dia a dia a eventos especiais, carregando o essencial com muito charme. OBS.: Produto feito a base de cola, contraindicado utilizar em superfícies molhadas.",
     price: 185.0,
-    images: ["/images/meia-lua-red.jpeg", "/images/meia-lua-red-2.jpeg"],
+    images: ["/images/meia-lua-red.jpeg", "/images/meia-lua red 2 (2).jpeg"],
     category: "Bolsas",
     rating: 4.4,
     isNew: true,
