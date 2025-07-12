@@ -148,7 +148,7 @@ const products: Product[] = [
     slug: "clutch-black", // Slug atualizado
     description:
       "Uma clutch sofisticada e versátil, perfeita para eventos especiais ou para adicionar um toque de elegância ao seu dia a dia. Com design minimalista e fecho moderno. OBS.: Produto feito a base de cola, contraindicado utilizar em superfícies molhadas.",
-    price: 120.0,
+    price: 205.0,
     images: ["/images/clutch black.jpeg", "/images/bolsa-clutch-azul.jpeg"],
     category: "Bolsas",
     rating: 4.7,
@@ -262,7 +262,7 @@ const products: Product[] = [
     slug: "clutch-listrada",
     description:
       "A Clutch Listrada é a combinação perfeita de estilo e modernidade. Com um design arrojado em listras pretas e brancas e uma alça de mão integrada, ela é ideal para quem busca um acessório que se destaque. Perfeita para eventos noturnos ou para dar um toque fashion ao seu look diário. OBS.: Produto feito a base de cola, contraindicado utilizar em superfícies molhadas.",
-    price: 160.0,
+    price: 95.0,
     images: ["/images/clutch-listrada.jpeg", "/images/clutch-listrada-2.jpeg"],
     category: "Bolsas",
     rating: 4.6,
