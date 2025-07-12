@@ -286,7 +286,7 @@ const products: Product[] = [
   },
   {
     id: "10",
-    name: "Porta-Cartões",
+    name: "PORTA-CARTÕES",
     slug: "porta-cartao-essencial",
     description:
       "Um porta-cartão compacto e elegante, ideal para organizar seus cartões e documentos. Perfeito para o dia a dia ou para complementar sua bolsa.",
