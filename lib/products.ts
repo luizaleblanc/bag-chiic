@@ -315,9 +315,9 @@ const products: Product[] = [
 
 export function getProducts(limit?: number) {
   if (limit) {
-    return products.slice(0, limit)
+    return products.filter((product) => product.id !== "10").slice(0, limit)
   }
-  return products
+  return products.filter((product) => product.id !== "10")
 }
 
 export function getProductBySlug(slug: string) {
