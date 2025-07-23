@@ -7,15 +7,14 @@ import { useRouter } from "next/navigation"
 import { ChevronLeft } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Separator } from "@/components/ui/separator"
 import { useToast } from "@/components/ui/use-toast"
 import { useCart } from "@/components/cart/use-cart"
 import { formatCurrency } from "@/lib/utils"
-import { AddressForm } from "@/components/checkout/address-form"
-import { sendOrderMessage } from "@/app/message-actions"
+// REMOVE: import { AddressForm } from "@/components/checkout/address-form"
+// REMOVE: import { sendOrderMessage } from "@/app/message-actions"
 
 export default function CheckoutPage() {
   const router = useRouter()
@@ -23,20 +22,27 @@ export default function CheckoutPage() {
   const { items, cartTotal, clearCart } = useCart()
   const [isProcessing, setIsProcessing] = useState(false)
   const [shippingMethod, setShippingMethod] = useState("standard")
-  // Remove the entire "Payment Method" section
-  // 1. Remove the `paymentMethod` state and `setPaymentMethod` from `useState`.
-  // 2. Remove the `paymentMethod` prop from `PagbankCreditCardForm`.
-  // 3. Remove the entire `div` block that starts with ` {/* Payment Method */}` and ends before ` {/* The main "Finalizar Pedido" button... */}`. This block contains the `RadioGroup` for payment methods and all the payment forms.
-  // 4. Simplify the "Finalizar Pedido" button. Remove all conditional rendering based on `paymentMethod` and keep only one `Button` that calls `handleFinalizeOrder`.
-
-  // State for customer information
-  const [customerName, setCustomerName] = useState("")
-  const [customerEmail, setCustomerEmail] = useState("")
-  const [customerCpf, setCustomerCpf] = useState("")
-  const [customerPhone, setCustomerPhone] = useState("")
+  // REMOVE: State for customer information
+  // REMOVE: const [customerName, setCustomerName] = useState("")
+  // REMOVE: const [customerEmail, setCustomerEmail] = useState("")
+  // REMOVE: const [customerCpf, setCustomerCpf] = useState("")
+  // REMOVE: const [customerPhone, setCustomerPhone] = useState("")
 
   const shippingCost = shippingMethod === "express" ? 25.9 : 15.9
   const totalWithShipping = cartTotal + shippingCost
+
+  // Map of product slugs to Yampi payment links
+  const yampiLinks = {
+    "bolsa-tiracolo-black": "https://bag-chiic.pay.yampi.com.br/r/C559QAVU4D",
+    "bolsa-meia-lua": "https://bag-chiic.pay.yampi.com.br/r/FLQVP9A0R4",
+    "bolsa-safira": "https://bag-chiic.pay.yampi.com.br/r/GSW221X77O",
+    "bolsa-bau": "https://bag-chiic.pay.yampi.com.br/r/FTHI8JHKYH",
+    "clutch-black": "https://bag-chiic.pay.yampi.com.br/r/IMB2L68YBY",
+    "carteira-animalprint": "https://bag-chiic.pay.yampi.com.br/r/4W7D270688",
+    "bau-vm-cores": "https://bag-chiic.pay.yampi.com.br/r/MV3FUQ7RHI",
+    "meia-lua-red": "https://bag-chiic.pay.yampi.com.br/r/FA1634WBXP",
+    "clutch-listrada": "https://bag-chiic.pay.yampi.com.br/r/C8D0MXCW0L",
+  }
 
   // Redirect if cart is empty
   useEffect(() => {
@@ -51,42 +57,48 @@ export default function CheckoutPage() {
     // Simulate a brief processing time
     await new Promise((resolve) => setTimeout(resolve, 500))
 
-    // Send message to the specified number (server-side)
-    await sendOrderMessage(customerName, customerEmail, totalWithShipping)
+    let redirectUrl = ""
 
-    setIsProcessing(false)
+    // Check if there's exactly one item in the cart and if it's a specific bag
+    if (items.length === 1 && items[0].quantity === 1 && yampiLinks[items[0].slug]) {
+      redirectUrl = yampiLinks[items[0].slug]
+      toast({
+        title: "Redirecionando para o pagamento específico da bolsa!",
+        description: `Você será levado para a página de pagamento da ${items[0].name}.`,
+      })
+    } else {
+      // Fallback to Mercado Pago for multiple items, non-bag items, or free gifts
+      const finalAmount = totalWithShipping
+      const formattedAmount = finalAmount.toFixed(2)
+      redirectUrl = `https://link.mercadopago.com.br/bagchiice?amount=${formattedAmount}`
+      toast({
+        title: "Redirecionando para o pagamento!",
+        description: "Você será levado para a página de pagamento do Mercado Pago.",
+      })
+    }
+
     clearCart() // Clear cart after successful order simulation
-
-    toast({
-      title: "Pedido realizado com sucesso!",
-      description: "Você será redirecionado para o pagamento. Notificação interna enviada.",
-    })
-
-    const finalAmount = totalWithShipping
-    const formattedAmount = finalAmount.toFixed(2)
-
-    // Redirect to Mercado Pago link with the final amount
-    const mercadoPagoLink = `https://link.mercadopago.com.br/bagchiice?amount=${formattedAmount}`
-    router.push(mercadoPagoLink)
+    router.push(redirectUrl)
   }
 
-  const handlePagbankPaymentSuccess = (transactionId: string) => {
-    toast({
-      title: "Pagamento PagBank Aprovado!",
-      description: `Transação ID: ${transactionId}. Seu pedido será processado.`,
-      variant: "default",
-    })
-    clearCart()
-    router.push("/confirmacao-pedido") // Redirect to a confirmation page
-  }
+  // REMOVE: handlePagbankPaymentSuccess and handlePagbankPaymentError are no longer needed
+  // REMOVE: const handlePagbankPaymentSuccess = (transactionId: string) => {
+  // REMOVE:   toast({
+  // REMOVE:     title: "Pagamento PagBank Aprovado!",
+  // REMOVE:     description: `Transação ID: ${transactionId}. Seu pedido será processado.`,
+  // REMOVE:     variant: "default",
+  // REMOVE:   })
+  // REMOVE:   clearCart()
+  // REMOVE:   router.push("/confirmacao-pedido") // Redirect to a confirmation page
+  // REMOVE: }
 
-  const handlePagbankPaymentError = (message: string) => {
-    toast({
-      title: "Erro no Pagamento PagBank",
-      description: message,
-      variant: "destructive",
-    })
-  }
+  // REMOVE: const handlePagbankPaymentError = (message: string) => {
+  // REMOVE:   toast({
+  // REMOVE:     title: "Erro no Pagamento PagBank",
+  // REMOVE:     description: message,
+  // REMOVE:     variant: "destructive",
+  // REMOVE:   })
+  // REMOVE: }
 
   // Render null or loading state while checking cart
   if (items.length === 0) {
@@ -106,8 +118,8 @@ export default function CheckoutPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-8">
-          {/* Customer Information */}
-          <div className="bg-white rounded-lg border shadow-sm p-6">
+          {/* REMOVE: Customer Information */}
+          {/* REMOVE: <div className="bg-white rounded-lg border shadow-sm p-6">
             <h2 className="text-lg font-bold mb-4">Informações Pessoais</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
@@ -148,13 +160,13 @@ export default function CheckoutPage() {
                 />
               </div>
             </div>
-          </div>
+          </div> */}
 
-          {/* Shipping Address */}
-          <div className="bg-white rounded-lg border shadow-sm p-6">
+          {/* REMOVE: Shipping Address */}
+          {/* REMOVE: <div className="bg-white rounded-lg border shadow-sm p-6">
             <h2 className="text-lg font-bold mb-4">Endereço de Entrega</h2>
             <AddressForm />
-          </div>
+          </div> */}
 
           {/* Shipping Method */}
           <div className="bg-white rounded-lg border shadow-sm p-6">
