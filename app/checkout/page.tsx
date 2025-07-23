@@ -58,27 +58,37 @@ export default function CheckoutPage() {
     await new Promise((resolve) => setTimeout(resolve, 500))
 
     let redirectUrl = ""
+    let foundSpecificProduct = false
 
-    // Check if there's exactly one item in the cart and if it's a specific bag
-    if (items.length === 1 && items[0].quantity === 1 && yampiLinks[items[0].slug]) {
-      redirectUrl = yampiLinks[items[0].slug]
-      toast({
-        title: "Redirecionando para o pagamento específico da bolsa!",
-        description: `Você será levado para a página de pagamento da ${items[0].name}.`,
-      })
-    } else {
-      // Fallback to Mercado Pago for multiple items, non-bag items, or free gifts
+    // Check if there's any item in the cart that matches our Yampi links
+    for (const item of items) {
+      if (yampiLinks[item.slug]) {
+        redirectUrl = yampiLinks[item.slug]
+        foundSpecificProduct = true
+        toast({
+          title: "Redirecionando para pagamento!",
+          description: `Você será levado para a página de pagamento da ${item.name}.`,
+        })
+        break // Use the first matching product found
+      }
+    }
+
+    // If no specific product found, use Mercado Pago fallback
+    if (!foundSpecificProduct) {
       const finalAmount = totalWithShipping
       const formattedAmount = finalAmount.toFixed(2)
       redirectUrl = `https://link.mercadopago.com.br/bagchiice?amount=${formattedAmount}`
       toast({
-        title: "Redirecionando para o pagamento!",
+        title: "Redirecionando para pagamento!",
         description: "Você será levado para a página de pagamento do Mercado Pago.",
       })
     }
 
+    setIsProcessing(false)
     clearCart() // Clear cart after successful order simulation
-    router.push(redirectUrl)
+
+    // Use window.location.href for more reliable redirection
+    window.location.href = redirectUrl
   }
 
   // REMOVE: handlePagbankPaymentSuccess and handlePagbankPaymentError are no longer needed
