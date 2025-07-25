@@ -14,23 +14,24 @@ export default function Home() {
       {/* Features */}
       <section className="border-t border-b py-6 bg-white">
         <div className="container">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            <div className="flex flex-col items-center text-center p-4">
+          {/* Alterado para flexbox com rolagem horizontal para mobile */}
+          <div className="flex overflow-x-auto whitespace-nowrap py-2 -mx-4 px-4 md:grid md:grid-cols-4 md:gap-6 md:mx-0 md:px-0">
+            <div className="flex flex-col items-center text-center p-4 flex-shrink-0 w-1/2 md:w-auto">
               <Truck className="h-8 w-8 mb-2 text-primary" />
               <h3 className="font-medium">Frete Grátis</h3>
               <p className="text-sm text-muted-foreground">Para compras acima de R$299</p>
             </div>
-            <div className="flex flex-col items-center text-center p-4">
+            <div className="flex flex-col items-center text-center p-4 flex-shrink-0 w-1/2 md:w-auto">
               <CreditCard className="h-8 w-8 mb-2 text-primary" />
               <h3 className="font-medium">Pagamento Seguro</h3>
               <p className="text-sm text-muted-foreground">Cartão, boleto e Pix</p>
             </div>
-            <div className="flex flex-col items-center text-center p-4">
+            <div className="flex flex-col items-center text-center p-4 flex-shrink-0 w-1/2 md:w-auto">
               <Clock className="h-8 w-8 mb-2 text-primary" />
               <h3 className="font-medium">Entrega</h3>
               <p className="text-sm text-muted-foreground">A confecção das bolsas demoram até 5 dias</p>
             </div>
-            <div className="flex flex-col items-center text-center p-4">
+            <div className="flex flex-col items-center text-center p-4 flex-shrink-0 w-1/2 md:w-auto">
               <Shield className="h-8 w-8 mb-2 text-primary" />
               <h3 className="font-medium">Compra Protegida</h3>
               <p className="text-sm text-muted-foreground">7 dias para devolução</p>
