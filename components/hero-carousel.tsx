@@ -39,7 +39,8 @@ export function HeroCarousel() {
       >
         {slides.map((slide) => (
           <div key={slide.id} className="relative min-w-full">
-            <div className="relative h-[250px] md:h-[400px] lg:h-[500px] w-full">
+            {/* Ajustado a altura para telas muito pequenas (xs) para mostrar mais das laterais */}
+            <div className="relative h-[180px] sm:h-[250px] md:h-[400px] lg:h-[500px] w-full">
               <Image src={slide.image || "/placeholder.svg"} alt={slide.alt} fill className="object-cover" priority />
             </div>
           </div>
