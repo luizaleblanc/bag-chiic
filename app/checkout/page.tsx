@@ -37,13 +37,6 @@ export default function CheckoutPage() {
     "clutch-listrada": "https://bag-chiic.pay.yampi.com.br/r/C8D0MXCW0L",
   }
 
-  // REMOVE: Redirect if cart is empty - this was causing the issue
-  // useEffect(() => {
-  //   if (items.length === 0) {
-  //     router.push("/carrinho")
-  //   }
-  // }, [items.length, router])
-
   const handleFinalizeOrder = async () => {
     setIsProcessing(true)
 
@@ -74,14 +67,45 @@ export default function CheckoutPage() {
       })
     }
 
-    // Clear cart after determining redirect URL but before redirecting
-    clearCart()
-
-    // Use window.location.href for immediate redirection
+    // Immediate redirection without clearing cart first
     window.location.href = redirectUrl
+
+    // Clear cart after a delay to ensure redirection happens first
+    setTimeout(() => {
+      clearCart()
+    }, 1000)
   }
 
-  // Show checkout even if cart is empty (since we're redirecting immediately)
+  // Show loading state while processing to prevent empty cart display
+  if (isProcessing) {
+    return (
+      <div className="container py-8">
+        <div className="flex flex-col items-center justify-center py-12 text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
+          <h2 className="text-xl font-bold mb-2">Processando seu pedido...</h2>
+          <p className="text-muted-foreground">Você será redirecionado para o pagamento em instantes.</p>
+        </div>
+      </div>
+    )
+  }
+
+  // If cart is empty and not processing, show empty state
+  if (items.length === 0) {
+    return (
+      <div className="container py-8">
+        <div className="flex flex-col items-center justify-center py-12 text-center">
+          <h1 className="text-2xl font-bold mb-2">Seu carrinho está vazio</h1>
+          <p className="text-muted-foreground mb-6">
+            Parece que você ainda não adicionou nenhum produto ao seu carrinho.
+          </p>
+          <Button asChild>
+            <Link href="/produtos">Ver Produtos</Link>
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="container py-8">
       <div className="flex items-center mb-6">
@@ -126,57 +150,46 @@ export default function CheckoutPage() {
             <h2 className="font-bold text-lg">Resumo do Pedido</h2>
             <Separator />
 
-            {items.length > 0 ? (
-              <>
-                <div className="max-h-80 overflow-y-auto space-y-4 pr-2">
-                  {items.map((item) => (
-                    <div key={item.id} className="flex space-x-4">
-                      {item.id !== "10" && (
-                        <div className="relative h-16 w-16 rounded-md overflow-hidden border flex-shrink-0">
-                          <Image src={item.image || "/placeholder.svg"} alt={item.name} fill className="object-cover" />
-                        </div>
-                      )}
-                      <div className="flex-1">
-                        <h3 className="font-medium text-sm">{item.name}</h3>
-                        <p className="text-sm text-muted-foreground">Qtd: {item.quantity}</p>
-                        <p className="text-sm font-medium">{formatCurrency(item.price * item.quantity)}</p>
-                      </div>
+            <div className="max-h-80 overflow-y-auto space-y-4 pr-2">
+              {items.map((item) => (
+                <div key={item.id} className="flex space-x-4">
+                  {item.id !== "10" && (
+                    <div className="relative h-16 w-16 rounded-md overflow-hidden border flex-shrink-0">
+                      <Image src={item.image || "/placeholder.svg"} alt={item.name} fill className="object-cover" />
                     </div>
-                  ))}
-                </div>
-
-                <Separator />
-
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Subtotal</span>
-                    <span>{formatCurrency(cartTotal)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Frete</span>
-                    <span>{formatCurrency(shippingCost)}</span>
+                  )}
+                  <div className="flex-1">
+                    <h3 className="font-medium text-sm">{item.name}</h3>
+                    <p className="text-sm text-muted-foreground">Qtd: {item.quantity}</p>
+                    <p className="text-sm font-medium">{formatCurrency(item.price * item.quantity)}</p>
                   </div>
                 </div>
+              ))}
+            </div>
 
-                <Separator />
+            <Separator />
 
-                <div className="flex justify-between font-bold text-lg">
-                  <span>Total</span>
-                  <span>{formatCurrency(totalWithShipping)}</span>
-                </div>
-
-                <Button onClick={handleFinalizeOrder} className="w-full" size="lg" disabled={isProcessing}>
-                  {isProcessing ? "Processando..." : "Finalizar Pedido"}
-                </Button>
-              </>
-            ) : (
-              <div className="text-center py-8">
-                <p className="text-muted-foreground mb-4">Seu carrinho está vazio</p>
-                <Button asChild>
-                  <Link href="/produtos">Ver Produtos</Link>
-                </Button>
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Subtotal</span>
+                <span>{formatCurrency(cartTotal)}</span>
               </div>
-            )}
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Frete</span>
+                <span>{formatCurrency(shippingCost)}</span>
+              </div>
+            </div>
+
+            <Separator />
+
+            <div className="flex justify-between font-bold text-lg">
+              <span>Total</span>
+              <span>{formatCurrency(totalWithShipping)}</span>
+            </div>
+
+            <Button onClick={handleFinalizeOrder} className="w-full" size="lg" disabled={isProcessing}>
+              {isProcessing ? "Processando..." : "Finalizar Pedido"}
+            </Button>
 
             <p className="text-xs text-center text-muted-foreground">
               Ao finalizar seu pedido, você concorda com nossos{" "}
