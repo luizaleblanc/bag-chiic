@@ -26,13 +26,12 @@ interface AddToCartButtonProps {
 
 export function AddToCartButton({ product, quantity = 1, className }: AddToCartButtonProps) {
   const { addItem } = useCart()
-  const { toast } = useToast()
+  const { toast } = useToast() // Hook para exibir notificações
   const [isAdding, setIsAdding] = useState(false)
 
   const handleAddToCart = () => {
     setIsAdding(true)
 
-    // Simulate a small delay for better UX
     setTimeout(() => {
       addItem({
         id: product.id,
@@ -40,16 +39,16 @@ export function AddToCartButton({ product, quantity = 1, className }: AddToCartB
         price: product.price,
         quantity: quantity,
         slug: product.slug,
-        image: product.images?.[0] || "/placeholder.svg", // Use the first image or fallback to placeholder
+        image: product.images?.[0] || "/placeholder.svg",
       })
 
       if (product.category === "Bolsas") {
-        const freeWallet = getProductById("10") // ID da "Carteira AnimalPrint"
+        const freeWallet = getProductById("10")
         if (freeWallet) {
           addItem({
             id: freeWallet.id,
             name: freeWallet.name,
-            price: 0, // Preço zero para o brinde
+            price: 0,
             quantity: 1,
             slug: freeWallet.slug,
             image: freeWallet.images?.[0] || "/placeholder.svg",
