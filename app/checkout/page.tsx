@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
@@ -13,8 +13,6 @@ import { Separator } from "@/components/ui/separator"
 import { useToast } from "@/components/ui/use-toast"
 import { useCart } from "@/components/cart/use-cart"
 import { formatCurrency } from "@/lib/utils"
-// REMOVE: import { AddressForm } from "@/components/checkout/address-form"
-// REMOVE: import { sendOrderMessage } from "@/app/message-actions"
 
 export default function CheckoutPage() {
   const router = useRouter()
@@ -22,11 +20,6 @@ export default function CheckoutPage() {
   const { items, cartTotal, clearCart } = useCart()
   const [isProcessing, setIsProcessing] = useState(false)
   const [shippingMethod, setShippingMethod] = useState("standard")
-  // REMOVE: State for customer information
-  // REMOVE: const [customerName, setCustomerName] = useState("")
-  // REMOVE: const [customerEmail, setCustomerEmail] = useState("")
-  // REMOVE: const [customerCpf, setCustomerCpf] = useState("")
-  // REMOVE: const [customerPhone, setCustomerPhone] = useState("")
 
   const shippingCost = shippingMethod === "express" ? 25.9 : 15.9
   const totalWithShipping = cartTotal + shippingCost
@@ -44,18 +37,15 @@ export default function CheckoutPage() {
     "clutch-listrada": "https://bag-chiic.pay.yampi.com.br/r/C8D0MXCW0L",
   }
 
-  // Redirect if cart is empty
-  useEffect(() => {
-    if (items.length === 0) {
-      router.push("/carrinho")
-    }
-  }, [items.length, router])
+  // REMOVE: Redirect if cart is empty - this was causing the issue
+  // useEffect(() => {
+  //   if (items.length === 0) {
+  //     router.push("/carrinho")
+  //   }
+  // }, [items.length, router])
 
   const handleFinalizeOrder = async () => {
     setIsProcessing(true)
-
-    // Simulate a brief processing time
-    await new Promise((resolve) => setTimeout(resolve, 500))
 
     let redirectUrl = ""
     let foundSpecificProduct = false
@@ -84,37 +74,14 @@ export default function CheckoutPage() {
       })
     }
 
-    setIsProcessing(false)
-    clearCart() // Clear cart after successful order simulation
+    // Clear cart after determining redirect URL but before redirecting
+    clearCart()
 
-    // Use window.location.href for more reliable redirection
+    // Use window.location.href for immediate redirection
     window.location.href = redirectUrl
   }
 
-  // REMOVE: handlePagbankPaymentSuccess and handlePagbankPaymentError are no longer needed
-  // REMOVE: const handlePagbankPaymentSuccess = (transactionId: string) => {
-  // REMOVE:   toast({
-  // REMOVE:     title: "Pagamento PagBank Aprovado!",
-  // REMOVE:     description: `Transação ID: ${transactionId}. Seu pedido será processado.`,
-  // REMOVE:     variant: "default",
-  // REMOVE:   })
-  // REMOVE:   clearCart()
-  // REMOVE:   router.push("/confirmacao-pedido") // Redirect to a confirmation page
-  // REMOVE: }
-
-  // REMOVE: const handlePagbankPaymentError = (message: string) => {
-  // REMOVE:   toast({
-  // REMOVE:     title: "Erro no Pagamento PagBank",
-  // REMOVE:     description: message,
-  // REMOVE:     variant: "destructive",
-  // REMOVE:   })
-  // REMOVE: }
-
-  // Render null or loading state while checking cart
-  if (items.length === 0) {
-    return null
-  }
-
+  // Show checkout even if cart is empty (since we're redirecting immediately)
   return (
     <div className="container py-8">
       <div className="flex items-center mb-6">
@@ -128,56 +95,6 @@ export default function CheckoutPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-8">
-          {/* REMOVE: Customer Information */}
-          {/* REMOVE: <div className="bg-white rounded-lg border shadow-sm p-6">
-            <h2 className="text-lg font-bold mb-4">Informações Pessoais</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Nome Completo</Label>
-                <Input
-                  id="name"
-                  placeholder="Seu nome completo"
-                  value={customerName}
-                  onChange={(e) => setCustomerName(e.target.value)}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">E-mail</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="seu@email.com"
-                  value={customerEmail}
-                  onChange={(e) => setCustomerEmail(e.target.value)}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="cpf">CPF</Label>
-                <Input
-                  id="cpf"
-                  placeholder="000.000.000-00"
-                  value={customerCpf}
-                  onChange={(e) => setCustomerCpf(e.target.value)}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="phone">Telefone</Label>
-                <Input
-                  id="phone"
-                  placeholder="(00) 00000-0000"
-                  value={customerPhone}
-                  onChange={(e) => setCustomerPhone(e.target.value)}
-                />
-              </div>
-            </div>
-          </div> */}
-
-          {/* REMOVE: Shipping Address */}
-          {/* REMOVE: <div className="bg-white rounded-lg border shadow-sm p-6">
-            <h2 className="text-lg font-bold mb-4">Endereço de Entrega</h2>
-            <AddressForm />
-          </div> */}
-
           {/* Shipping Method */}
           <div className="bg-white rounded-lg border shadow-sm p-6">
             <h2 className="text-lg font-bold mb-4">Método de Envio</h2>
@@ -209,47 +126,57 @@ export default function CheckoutPage() {
             <h2 className="font-bold text-lg">Resumo do Pedido</h2>
             <Separator />
 
-            <div className="max-h-80 overflow-y-auto space-y-4 pr-2">
-              {items.map((item) => (
-                <div key={item.id} className="flex space-x-4">
-                  {item.id !== "10" && (
-                    <div className="relative h-16 w-16 rounded-md overflow-hidden border flex-shrink-0">
-                      <Image src={item.image || "/placeholder.svg"} alt={item.name} fill className="object-cover" />
+            {items.length > 0 ? (
+              <>
+                <div className="max-h-80 overflow-y-auto space-y-4 pr-2">
+                  {items.map((item) => (
+                    <div key={item.id} className="flex space-x-4">
+                      {item.id !== "10" && (
+                        <div className="relative h-16 w-16 rounded-md overflow-hidden border flex-shrink-0">
+                          <Image src={item.image || "/placeholder.svg"} alt={item.name} fill className="object-cover" />
+                        </div>
+                      )}
+                      <div className="flex-1">
+                        <h3 className="font-medium text-sm">{item.name}</h3>
+                        <p className="text-sm text-muted-foreground">Qtd: {item.quantity}</p>
+                        <p className="text-sm font-medium">{formatCurrency(item.price * item.quantity)}</p>
+                      </div>
                     </div>
-                  )}
-                  <div className="flex-1">
-                    <h3 className="font-medium text-sm">{item.name}</h3>
-                    <p className="text-sm text-muted-foreground">Qtd: {item.quantity}</p>
-                    <p className="text-sm font-medium">{formatCurrency(item.price * item.quantity)}</p>
+                  ))}
+                </div>
+
+                <Separator />
+
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Subtotal</span>
+                    <span>{formatCurrency(cartTotal)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Frete</span>
+                    <span>{formatCurrency(shippingCost)}</span>
                   </div>
                 </div>
-              ))}
-            </div>
 
-            <Separator />
+                <Separator />
 
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Subtotal</span>
-                <span>{formatCurrency(cartTotal)}</span>
+                <div className="flex justify-between font-bold text-lg">
+                  <span>Total</span>
+                  <span>{formatCurrency(totalWithShipping)}</span>
+                </div>
+
+                <Button onClick={handleFinalizeOrder} className="w-full" size="lg" disabled={isProcessing}>
+                  {isProcessing ? "Processando..." : "Finalizar Pedido"}
+                </Button>
+              </>
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-muted-foreground mb-4">Seu carrinho está vazio</p>
+                <Button asChild>
+                  <Link href="/produtos">Ver Produtos</Link>
+                </Button>
               </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Frete</span>
-                <span>{formatCurrency(shippingCost)}</span>
-              </div>
-            </div>
-
-            <Separator />
-
-            <div className="flex justify-between font-bold text-lg">
-              <span>Total</span>
-              <span>{formatCurrency(totalWithShipping)}</span>
-            </div>
-
-            {/* The main "Finalizar Pedido" button is now only for Mercado Pago or if no specific payment method handles it */}
-            <Button onClick={handleFinalizeOrder} className="w-full" size="lg" disabled={isProcessing}>
-              {isProcessing ? "Processando..." : "Finalizar Pedido"}
-            </Button>
+            )}
 
             <p className="text-xs text-center text-muted-foreground">
               Ao finalizar seu pedido, você concorda com nossos{" "}
