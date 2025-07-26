@@ -3,7 +3,6 @@ import { Truck, CreditCard, Clock, Shield } from "lucide-react"
 import { Skeleton } from "@/components/ui/skeleton"
 import { FeaturedProducts } from "@/components/product/featured-products"
 import { HeroCarousel } from "@/components/hero-carousel"
-import { FreeShippingBanner } from "@/components/free-shipping-banner"
 
 export default function Home() {
   return (
@@ -43,7 +42,42 @@ export default function Home() {
       </section>
 
       {/* Free Shipping Banner - Full Width */}
-      <FreeShippingBanner />
+      <section className="py-6 bg-zinc-50">
+        <div className="container">
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+              height: "0",
+              paddingTop: "29.1667%",
+              paddingBottom: "0",
+              boxShadow: "0 2px 8px 0 rgba(63,69,81,0.16)",
+              marginTop: "1.6em",
+              marginBottom: "0.9em",
+              overflow: "hidden",
+              borderRadius: "8px",
+              willChange: "transform",
+            }}
+          >
+            <iframe
+              loading="lazy"
+              style={{
+                position: "absolute",
+                width: "100%",
+                height: "100%",
+                top: "0",
+                left: "0",
+                border: "none",
+                padding: "0",
+                margin: "0",
+              }}
+              src="https://www.canva.com/design/DAGsogwNsAw/x_AxYjaTgz7DmO2p5J8EcQ/view?embed"
+              allowFullScreen={true}
+              allow="fullscreen"
+            ></iframe>
+          </div>
+        </div>
+      </section>
 
       {/* Products */}
       <section className="py-6 bg-zinc-50">
