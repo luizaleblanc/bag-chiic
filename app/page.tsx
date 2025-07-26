@@ -1,5 +1,5 @@
 import { Suspense } from "react"
-import { Truck, CreditCard, Clock, Shield } from "lucide-react"
+import { CreditCard, Clock, Shield } from "lucide-react"
 import { Skeleton } from "@/components/ui/skeleton"
 import { FeaturedProducts } from "@/components/product/featured-products"
 import { HeroCarousel } from "@/components/hero-carousel"
@@ -18,11 +18,6 @@ export default function Home() {
         <div className="container">
           {/* Layout responsivo melhorado */}
           <div className="flex overflow-x-auto gap-4 pb-2 md:grid md:grid-cols-4 md:gap-6 md:overflow-visible">
-            <div className="flex flex-col items-center text-center p-4 min-w-[200px] md:min-w-0">
-              <Truck className="h-8 w-8 mb-2 text-primary" />
-              <h3 className="font-medium whitespace-nowrap">Frete Grátis</h3>
-              <p className="text-sm text-muted-foreground text-center">Para compras acima de R$299</p>
-            </div>
             <div className="flex flex-col items-center text-center p-4 min-w-[200px] md:min-w-0">
               <CreditCard className="h-8 w-8 mb-2 text-primary" />
               <h3 className="font-medium whitespace-nowrap">Pagamento Seguro</h3>
