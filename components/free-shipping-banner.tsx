@@ -1,17 +1,19 @@
 import Image from "next/image"
 
 export function FreeShippingBanner() {
+  // A proporção da imagem banner-correto.png é 1920x400.
+  // Calculamos a porcentagem para o padding-top: (altura / largura) * 100 = (400 / 1920) * 100 = 20.8333...%
+  // Isso garante que o contêiner sempre terá a proporção correta da imagem.
   return (
     <section className="relative w-full overflow-hidden">
-      {/* No mobile, a imagem será 'object-contain' para ser inteiramente visível. */}
-      {/* No desktop (md:), ela voltará a ser 'object-cover' e 'object-center'. */}
-      {/* A altura é ajustada para acomodar a imagem inteira no mobile e preencher no desktop. */}
-      <div className="relative h-[200px] sm:h-[250px] md:h-[350px] lg:h-[400px] w-full">
+      <div className="relative w-full" style={{ paddingTop: "20.83%" }}>
+        {/* O padding-top cria um espaço que mantém a proporção da imagem. */}
+        {/* A imagem com 'fill' e 'object-cover' preencherá esse espaço, eliminando bordas brancas. */}
         <Image
-          src="/images/banner-correto.png" // Updated to the new banner image
+          src="/images/banner-correto.png"
           alt="Banner de Frete Grátis e 10% de desconto na primeira compra"
           fill
-          className="object-contain md:object-cover md:object-center"
+          className="object-cover" // Garante que a imagem preencha o contêiner, eliminando todos os espaços brancos
           priority
         />
       </div>
