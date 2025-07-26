@@ -12,7 +12,9 @@ export default function Home() {
       <HeroCarousel />
 
       {/* Features */}
-      <section className="border-t border-b py-6 bg-white">
+      <section className="border-t border-b py-4 bg-white">
+        {" "}
+        {/* Reduzido de py-6 para py-4 */}
         <div className="container">
           {/* Layout responsivo melhorado */}
           <div className="flex overflow-x-auto gap-4 pb-2 md:grid md:grid-cols-4 md:gap-6 md:overflow-visible">
@@ -44,7 +46,9 @@ export default function Home() {
       <FreeShippingBanner />
 
       {/* Products */}
-      <section className="py-8 bg-zinc-50">
+      <section className="py-6 bg-zinc-50">
+        {" "}
+        {/* Reduzido de py-8 para py-6 */}
         <div className="container">
           <Suspense fallback={<ProductsLoadingSkeleton />}>
             <FeaturedProducts />
