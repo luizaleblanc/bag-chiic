@@ -92,7 +92,7 @@ const products: Product[] = [
     description:
       "Com um design sofisticado e presença marcante, a Bolsa Safira é o acessório ideal para quem busca elegância atemporal. Seu formato estruturado e acabamento refinado valorizam qualquer produção — do look de trabalho ao evento especial. Confeccionada em material de alta qualidade, ela oferece versatilidade no uso e muita personalidade. Possui compartimento espaçoso, forro interno em tecido e fechamento seguro magnético, garantindo praticidade com muito estilo. OBS.: Produto feito a base de cola, contraindicado utilizar em superfícies molhadas.",
     price: 205.0,
-    images: ["/images/bolsa-safira.jpeg", "/images/safira.jpeg"],
+    images: ["/images/whatsapp-image-2025-07-25-at-22-06-50.jpeg", "/images/bolsa-safira.jpeg"],
     category: "Bolsas",
     rating: 4.8,
     isNew: true,
