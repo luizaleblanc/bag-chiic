@@ -13,11 +13,6 @@ const slides = [
     image: "/images/banner-bag-chic.png",
     alt: "Bag Chic - As suas bolsas favoritas estão de cara nova",
   },
-  {
-    id: 2,
-    image: "/images/promo-imperdivel.png",
-    alt: "Promo Imperdível - Na compra de qualquer bolsa, ganhe um porta-cartão",
-  },
 ]
 
 export function HeroCarousel() {

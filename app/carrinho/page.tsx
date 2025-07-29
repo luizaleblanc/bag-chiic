@@ -81,19 +81,17 @@ export default function CartPage() {
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
                   <div className="col-span-full md:col-span-6">
                     <div className="flex items-center space-x-4">
-                      {item.id !== "10" && (
-                        <div className="relative h-16 w-16 rounded-md overflow-hidden border flex-shrink-0">
-                          <Image
-                            src={item.image || "/placeholder.svg"}
-                            alt={item.name}
-                            fill
-                            className="object-cover"
-                            onError={(e) => {
-                              e.currentTarget.src = "/placeholder.svg"
-                            }}
-                          />
-                        </div>
-                      )}
+                      <div className="relative h-16 w-16 rounded-md overflow-hidden border flex-shrink-0">
+                        <Image
+                          src={item.image || "/placeholder.svg"}
+                          alt={item.name}
+                          fill
+                          className="object-cover"
+                          onError={(e) => {
+                            e.currentTarget.src = "/placeholder.svg"
+                          }}
+                        />
+                      </div>
                       <div>
                         <h3 className="font-medium">
                           <Link href={`/produtos/${item.slug}`} className="hover:underline">

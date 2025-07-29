@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import { useToast } from "@/components/ui/use-toast"
 import { useCart } from "@/components/cart/use-cart"
 import { cn } from "@/lib/utils"
-import { getProductById } from "@/lib/products"
 
 interface Product {
   id: string
@@ -42,33 +41,10 @@ export function AddToCartButton({ product, quantity = 1, className }: AddToCartB
         image: product.images?.[0] || "/placeholder.svg",
       })
 
-      if (product.category === "Bolsas") {
-        const freeWallet = getProductById("10")
-        if (freeWallet) {
-          addItem({
-            id: freeWallet.id,
-            name: freeWallet.name,
-            price: 0,
-            quantity: 1,
-            slug: freeWallet.slug,
-            image: freeWallet.images?.[0] || "/placeholder.svg",
-          })
-          toast({
-            title: "Produto adicionado e brinde incluído!",
-            description: `${product.name} foi adicionado ao seu carrinho. Você ganhou um ${freeWallet.name} de brinde!`,
-          })
-        } else {
-          toast({
-            title: "Produto adicionado",
-            description: `${product.name} foi adicionado ao seu carrinho.`,
-          })
-        }
-      } else {
-        toast({
-          title: "Produto adicionado",
-          description: `${product.name} foi adicionado ao seu carrinho.`,
-        })
-      }
+      toast({
+        title: "Produto adicionado",
+        description: `${product.name} foi adicionado ao seu carrinho.`,
+      })
 
       setIsAdding(false)
     }, 500)

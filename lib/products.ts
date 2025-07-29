@@ -35,7 +35,7 @@ const products: Product[] = [
     description:
       "Sofisticação e versatilidade em cada detalhe. A Bolsa Tiracolo Black é a escolha perfeita para quem busca elegância e praticidade no dia a dia. Seu design minimalista e atemporal combina com qualquer look, do casual ao sofisticado. Um item indispensável para mulheres que valorizam funcionalidade sem abrir mão da classe. OBS.: Produto feito a base de cola, contraindicado utilizar em superfícies molhadas.",
     price: 105.0,
-    images: ["/images/tiracolo-black-2.jpeg", "/images/tiracolo-black.jpeg"],
+    images: ["/images/tiracolo black (2).jpeg", "/images/tiracolo-black.jpeg"],
     category: "Bolsas",
     rating: 4.5,
     isNew: true,
@@ -92,7 +92,7 @@ const products: Product[] = [
     description:
       "Com um design sofisticado e presença marcante, a Bolsa Safira é o acessório ideal para quem busca elegância atemporal. Seu formato estruturado e acabamento refinado valorizam qualquer produção — do look de trabalho ao evento especial. Confeccionada em material de alta qualidade, ela oferece versatilidade no uso e muita personalidade. Possui compartimento espaçoso, forro interno em tecido e fechamento seguro magnético, garantindo praticidade com muito estilo. OBS.: Produto feito a base de cola, contraindicado utilizar em superfícies molhadas.",
     price: 205.0,
-    images: ["/images/whatsapp-image-2025-07-25-at-22-06-50.jpeg", "/images/bolsa-safira.jpeg"],
+    images: ["/images/safira n2.jpeg", "/images/safira n1.jpeg"],
     category: "Bolsas",
     rating: 4.8,
     isNew: true,
@@ -284,40 +284,10 @@ const products: Product[] = [
       Medidas: "30cm largura x 22.5cm altura (sem costura)",
     },
   },
-  {
-    id: "10",
-    name: "Porta-Cartões",
-    slug: "porta-cartao-essencial",
-    description:
-      "Um porta-cartão compacto e elegante, ideal para organizar seus cartões e documentos. Perfeito para o dia a dia ou para complementar sua bolsa.",
-    price: 0.0, // This will be the free gift
-    images: [],
-    category: "Acessórios",
-    rating: 4.9,
-    isNew: true,
-    stock: 100,
-    sku: "PC-001",
-    weight: 0.05,
-    dimensions: {
-      width: 10.0,
-      height: 7.0,
-      length: 1.0,
-    },
-    features: ["Design slim", "Compartimentos para múltiplos cartões", "Material durável"],
-    tags: ["acessório", "carteira", "porta-cartão"],
-    specs: {
-      Dimensões: "10cm comprimento x 7cm altura x 1cm largura",
-      Material: "Couro sintético",
-      Cores: "Variadas",
-    },
-  },
 ]
 
 export function getProducts(limit?: number) {
-  if (limit) {
-    return products.filter((product) => product.id !== "10").slice(0, limit)
-  }
-  return products.filter((product) => product.id !== "10")
+  return products.filter((product) => product.id !== "10").slice(0, limit)
 }
 
 export function getProductBySlug(slug: string) {
