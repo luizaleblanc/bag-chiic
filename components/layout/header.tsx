@@ -2,8 +2,8 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Search, ShoppingCart, User } from "lucide-react"
+import { usePathname, useRouter } from "next/navigation"
+import { Search, ShoppingCart, User } from 'lucide-react'
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -14,10 +14,11 @@ import { Logo } from "@/components/ui/Logo"
 
 export default function Header() {
   const pathname = usePathname()
+  const router = useRouter()
   const { items } = useCart()
   const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const [isCartOpen, setIsCartOpen] = useState(false)
   const [isSearchInputVisible, setIsSearchInputVisible] = useState(false)
+  const [isCartOpen, setIsCartOpen] = useState(false)
 
   const isAdminPage = pathname?.startsWith("/admin")
 
@@ -35,25 +36,55 @@ export default function Header() {
         <div className="flex items-center justify-between">
           {/* Left side - Search */}
           <div className="flex items-center">
-            <div className="relative flex items-center">
+            <div className="relative flex flex-col items-start">
               <Button
                 variant="ghost"
                 size="sm"
                 className="flex items-center space-x-1 text-sm text-black hover:text-black"
-                onClick={() => setIsSearchInputVisible(!isSearchInputVisible)} // Toggle visibility on click
+                onMouseEnter={() => setIsSearchInputVisible(true)} // Show on hover for desktop
+                onMouseLeave={() => setIsSearchInputVisible(false)} // Hide when mouse leaves for desktop
+                onClick={() => setIsSearchInputVisible(!isSearchInputVisible)} // Toggle on click for mobile
               >
                 <Search className="h-4 w-4" />
-                <span className="hidden md:inline">Buscar</span> {/* Show text on medium screens and up */}
+                <span className="hidden md:inline">Buscar</span>
               </Button>
               {isSearchInputVisible && (
-                <div className="absolute left-0 top-full mt-2 w-full md:relative md:top-auto md:mt-0 md:w-80">
-                  <Input
-                    type="search"
-                    placeholder="O que você procura?"
-                    className="w-full bg-secondary text-white placeholder:text-gray-300 border-0 rounded-lg shadow-sm focus:ring-1 focus:ring-offset-0 focus:ring-primary"
-                    autoFocus={isSearchInputVisible}
-                    onBlur={() => setIsSearchInputVisible(false)} // Hide when focus is lost
-                  />
+                <div className="absolute top-full left-0 mt-2 w-64 md:w-80 z-50">
+                  <div className="relative">
+                    <Input
+                      type="text"
+                      placeholder="O que você procura?"
+                      className="w-full bg-secondary text-white placeholder:text-gray-300 border-0 rounded-lg shadow-sm focus:ring-1 focus:ring-offset-0 focus:ring-primary pr-8 [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none"
+                      autoFocus={isSearchInputVisible}
+                      onBlur={() => setIsSearchInputVisible(false)}
+                      onMouseEnter={() => setIsSearchInputVisible(true)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          const searchTerm = e.currentTarget.value.trim();
+                          if (searchTerm) {
+                            window.location.href = `/produtos?search=${encodeURIComponent(searchTerm)}`;
+                          }
+                        }
+                      }}
+                      onChange={(e) => {
+                        // Add search functionality here
+                        const searchTerm = e.target.value;
+                        // You can add product filtering logic here
+                      }}
+                    />
+                    <button
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 transition-colors"
+                      onClick={() => {
+                        setIsSearchInputVisible(false);
+                        // Clear search if needed
+                      }}
+                      type="button"
+                    >
+                      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
